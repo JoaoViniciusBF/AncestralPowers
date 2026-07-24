@@ -56,6 +56,7 @@ public interface PlayerTraits extends Component {
 
     String getIntelligence();
     void setIntelligence(String intelligence);
+
 }
 
     class PlayerTraitsComponent implements PlayerTraits {
@@ -78,12 +79,9 @@ public interface PlayerTraits extends Component {
 
         private UUID arenaTarget;
 
-
-
         private String movement;
         private String main;
         private String intelligence;
-
 
         @Override
         public UUID getArenaTarget() {
@@ -248,9 +246,9 @@ public interface PlayerTraits extends Component {
 
         @Override
         public void writeData(WriteView writeView) {
-            writeView.putString("movement",movement);
-            writeView.putString("main",main);
-            writeView.putString("intelligence",intelligence);
+            writeView.putString("movement", movement != null ? movement : "");
+            writeView.putString("main", main != null ? main : "");
+            writeView.putString("intelligence", intelligence != null ? intelligence : "");
 
             writeView.putBoolean("Generated",Generated);
             writeView.putBoolean("Generated2",Generated2);

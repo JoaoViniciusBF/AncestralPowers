@@ -4,13 +4,17 @@ import dev.joaq.ancestralpowers.components.MyComponents;
 import dev.joaq.ancestralpowers.components.PlayerTraits;
 import dev.joaq.ancestralpowers.dimensions.ModDimensions;
 import dev.joaq.ancestralpowers.dimensions.PersonalDimensionStructure;
-import dev.joaq.ancestralpowers.util.RandomUtils;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import dev.joaq.ancestralpowers.powers.PowersManager;
+import dev.joaq.ancestralpowers.util.RandomUtils;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 
 public class ModCommands {
@@ -88,7 +92,50 @@ public class ModCommands {
                                 return 1;
                             })
             );
+
+            dispatcher.register(
+                    CommandManager.literal("powers")
+                            .requires(source -> source.hasPermissionLevel(2))
+                            .executes(context -> {
+                                ServerPlayerEntity player = context.getSource().getPlayer();
+                                if (player == null) return 0;
+
+                                player.sendMessage(Text.literal("§6=== Seletor de Poderes ==="), false);
+                                sendPowerOption(player, "Super Força");
+                                sendPowerOption(player, "Imortalidade");
+                                sendPowerOption(player, "Fireball");
+                                sendPowerOption(player, "SuperTeleporteMain");
+                                sendPowerOption(player, "Scale");
+                                sendPowerOption(player, "SuperSpeed");
+                                sendPowerOption(player, "Suppressor");
+                                sendPowerOption(player, "ArenaPower");
+                                return 1;
+                            })
+            );
+
+            dispatcher.register(
+                    CommandManager.literal("setpower")
+                            .requires(source -> source.hasPermissionLevel(2))
+                            .then(CommandManager.argument("power", StringArgumentType.greedyString())
+                                    .executes(context -> {
+                                        ServerPlayerEntity player = context.getSource().getPlayer();
+                                        if (player == null) return 0;
+
+                                        String power = StringArgumentType.getString(context, "power");
+                                        PlayerTraits traits = MyComponents.TRAITS.get(player);
+                                        PowersManager.resetAll(player);
+                                        traits.setMainPower(power);
+                                        player.sendMessage(Text.literal("§aPoder principal definido como: " + power), false);
+                                        return 1;
+                                    }))
+            );
         });
+    }
+
+    private static void sendPowerOption(ServerPlayerEntity player, String power) {
+        MutableText text = Text.literal("§e[ " + power + " ]")
+                .setStyle(Style.EMPTY.withClickEvent(new ClickEvent.RunCommand("/setpower " + power)));
+        player.sendMessage(text, false);
     }
 }
 
