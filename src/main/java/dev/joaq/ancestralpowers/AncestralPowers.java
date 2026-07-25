@@ -8,11 +8,13 @@ import dev.joaq.ancestralpowers.events.PlayerJoinEvent;
 import dev.joaq.ancestralpowers.events.PlayerPowersTickHandler;
 import dev.joaq.ancestralpowers.networking.ModPacketsC2S;
 import dev.joaq.ancestralpowers.networking.ModPacketsS2C;
+import dev.joaq.ancestralpowers.networking.packet.c2s.DoubleJumpPayload;
+import dev.joaq.ancestralpowers.networking.packet.c2s.OffhandAttackC2SPayload;
 import dev.joaq.ancestralpowers.networking.packet.c2s.PersonalDimensionCounterPayload;
 import dev.joaq.ancestralpowers.networking.packet.c2s.ToggleGPayload;
 import dev.joaq.ancestralpowers.networking.packet.c2s.ToggleRPayload;
-import dev.joaq.ancestralpowers.networking.packet.c2s.DoubleJumpPayload;
 import dev.joaq.ancestralpowers.networking.packet.s2c.StaminaSyncPayload;
+import dev.joaq.ancestralpowers.offhand.OffhandMod;
 import dev.joaq.ancestralpowers.registry.ModEffects;
 import dev.joaq.ancestralpowers.registry.ModEntities;
 import dev.joaq.ancestralpowers.registry.ModItems;
@@ -34,6 +36,7 @@ public class AncestralPowers implements ModInitializer, ClientModInitializer, De
     @Override
     public void onInitialize() {
 
+        PayloadTypeRegistry.playC2S().register(OffhandAttackC2SPayload.ID, OffhandAttackC2SPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(ToggleGPayload.PAYLOAD_ID, ToggleGPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(ToggleRPayload.PAYLOAD_ID, ToggleRPayload.CODEC);
         PayloadTypeRegistry.playC2S().register(DoubleJumpPayload.PAYLOAD_ID, DoubleJumpPayload.CODEC);
@@ -50,6 +53,7 @@ public class AncestralPowers implements ModInitializer, ClientModInitializer, De
         ModEffects.register();
         ModItems.register();
         PlayerDeathEvent.ImortalRegister();
+        OffhandMod.init();
         System.out.println("ancestralpowers: AncestralPowers inicializado!");
     }
 

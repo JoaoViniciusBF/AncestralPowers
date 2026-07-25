@@ -5,6 +5,7 @@ import dev.joaq.ancestralpowers.client.StaminaHudOverlay;
 import dev.joaq.ancestralpowers.client.DoubleJumpHandler;
 import dev.joaq.ancestralpowers.networking.packet.c2s.ToggleGPayload;
 import dev.joaq.ancestralpowers.networking.packet.c2s.ToggleRPayload;
+import dev.joaq.ancestralpowers.offhand.OffhandMod;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -19,6 +20,7 @@ public class AncestralPowersClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        OffhandMod.initClient();
         ModKeyBinds.registerKeyBinds();
         StaminaHudOverlay.register();
 
