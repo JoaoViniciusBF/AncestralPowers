@@ -3,8 +3,10 @@ package dev.joaq.ancestralpowers.networking;
 import dev.joaq.ancestralpowers.components.MyComponents;
 import dev.joaq.ancestralpowers.components.PlayerTraits;
 import dev.joaq.ancestralpowers.networking.packet.c2s.DoubleJumpPayload;
+import dev.joaq.ancestralpowers.networking.packet.c2s.OffhandAttackC2SPayload;
 import dev.joaq.ancestralpowers.networking.packet.c2s.ToggleGPayload;
 import dev.joaq.ancestralpowers.networking.packet.c2s.ToggleRPayload;
+import dev.joaq.ancestralpowers.offhand.OffhandMod;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -46,6 +48,10 @@ public class ModPacketsC2S {
                     20, 0.5, 0.1, 0.5, 0.04
                 );
             });
+        });
+
+        ServerPlayNetworking.registerGlobalReceiver(OffhandAttackC2SPayload.ID, (payload, context) -> {
+            OffhandMod.setOverride(context.player(), true);
         });
     }
 }
