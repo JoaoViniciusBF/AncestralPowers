@@ -19,6 +19,8 @@ public class PowersManager {
             case "Fireball" -> new FireballPower();
             case "Imortalidade" -> new ImortalPower();
             case "ArenaPower" -> new DimensionalArenaPower();
+            case "Solar" -> new SolarAccelerationPower();
+            case "Lunar" -> new LunarAccelerationPower();
             default -> null;
         };
     }
@@ -66,7 +68,9 @@ public class PowersManager {
                 new IncreaseScalePower(),
                 new DecreaseScalePower(),
                 new TeleportPower(),
-                new DimensionalArenaPower()
+                new DimensionalArenaPower(),
+                new SolarAccelerationPower(),
+                new LunarAccelerationPower()
         };
         for (Power p : powers) {
             p.reset(player);
