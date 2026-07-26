@@ -1,0 +1,6 @@
+## Resumo
+- **Novos Itens:** Machado Solar, Machado Lunar, Relíquia da Restauração, Botas do Salto Etéreo e Botas do Impulso Etéreo.
+- **Mecânicas Dinâmicas:** Adicionado cálculo de dano baseado na escala do tempo via `DayNightDamageUtils` (aferido por intermédio de Mixins visando alterar a física real de Dano provido via armamento).
+- **Tooltips Roleplaying:** Introdução de `appendTooltip` com cores descritivas a todos os itens citados.
+- **Client & Server Actions:** Criação de pacotes C2S e suporte do servidor para validar eventos como o Pulo Duplo acompanhado de renderizador de Partículas Elétricas.
+- **Arquitetura Base:** Documentação `AGENTS.md` adicionada e Bump para a versão \`1.2.0\` em `gradle.properties`.

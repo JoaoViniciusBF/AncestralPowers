@@ -11,7 +11,7 @@ import net.minecraft.world.GameRules;
 public class LunarAccelerationPower extends PowerBase {
 
     private static final long TARGET_TIME = 18000;
-    static final int SPEED_ADD = 1200;
+    static final int SPEED_ADD = 120;
 
     @Override
     protected float staminaCost() {
