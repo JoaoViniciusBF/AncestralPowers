@@ -8,9 +8,9 @@ import net.minecraft.world.World;
 
 public class ModDimensions {
     public static final RegistryKey<World> PERSONAL_WORLD_KEY =
-            RegistryKey.of(RegistryKeys.WORLD, Identifier.of(AncestralPowers.MOD_ID, "personal_dimension"));
+            RegistryKey.of(RegistryKeys.WORLD, new Identifier(AncestralPowers.MOD_ID, "personal_dimension"));
     public static final RegistryKey<World> DIMENSIONAL_ARENA_KEY =
-            RegistryKey.of(RegistryKeys.WORLD, Identifier.of(AncestralPowers.MOD_ID, "dimensional_arena"));
+            RegistryKey.of(RegistryKeys.WORLD, new Identifier(AncestralPowers.MOD_ID, "dimensional_arena"));
 
     public static void register() {
         AncestralPowers.LOGGER.info("ModDimensions registered (datapack dimension ancestralpowers:personal_dimension)");

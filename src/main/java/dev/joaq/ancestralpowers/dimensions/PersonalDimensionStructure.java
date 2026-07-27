@@ -21,7 +21,7 @@ import java.util.Optional;
 public class PersonalDimensionStructure {
 
     private static final int SPAWN_Y = 64;
-    private static final Identifier STRUCTURE_ID = Identifier.of("ancestralpowers", "personal_dimension_structure");
+    private static final Identifier STRUCTURE_ID = new Identifier("ancestralpowers", "personal_dimension_structure");
 
     // Geração da estrutura
     public static void generate(ServerWorld world, int i, int k) {
@@ -91,12 +91,11 @@ public class PersonalDimensionStructure {
         EnumSet<PositionFlag> flags = EnumSet.noneOf(PositionFlag.class);
 
         // Teleporta player
-        player.teleport(personalWorld, teleportPos.x, teleportPos.y, teleportPos.z, flags, player.getYaw(), player.getPitch(), false);
+         player.teleport(personalWorld, teleportPos.x, teleportPos.y, teleportPos.z, flags, player.getYaw(), player.getPitch());
 
-        // Teleporta target
-        if (target != null) {
-            target.teleport(personalWorld, teleportPos.x, teleportPos.y, teleportPos.z, flags, player.getYaw(), player.getPitch(), false);
-        }
+         if (target != null) {
+             target.teleport(personalWorld, teleportPos.x, teleportPos.y, teleportPos.z, flags, player.getYaw(), player.getPitch());
+         }
 
         player.sendMessage(Text.literal("§aVocê foi teleportado para sua dimensão pessoal."), false);
         if (target != null) {
@@ -112,14 +111,13 @@ public class PersonalDimensionStructure {
             returnPos = new Vec3d(overworld.getSpawnPos().getX(), overworld.getSpawnPos().getY(), overworld.getSpawnPos().getZ());
         }
 
-        player.teleport(player.getServer().getOverworld(),
-                returnPos.x,
-                returnPos.y,
-                returnPos.z,
-                EnumSet.noneOf(PositionFlag.class),
-                player.getYaw(),
-                player.getPitch(),
-                false);
+         player.teleport(player.getServer().getOverworld(),
+                 returnPos.x,
+                 returnPos.y,
+                 returnPos.z,
+                 EnumSet.noneOf(PositionFlag.class),
+                 player.getYaw(),
+                 player.getPitch());
 
         traits.clearUsagePosition();
         player.sendMessage(Text.literal("§aVocê retornou para sua posição original."), false);

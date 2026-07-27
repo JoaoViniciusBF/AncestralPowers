@@ -7,15 +7,13 @@ import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
+
+import java.util.UUID;
 
 public class SpeedPower extends PowerBase {
 
-    private static final Identifier MOVEMENT_SPEED_ID = Identifier.of("ancestralpowers", "super_speed");
-    private static final Identifier ATTACK_SPEED_ID = Identifier.of("ancestralpowers", "super_attack_speed");
-    private static final Identifier SUBMERGED_SPEED_ID = Identifier.of("ancestralpowers", "super_submerged_speed");
-    private static final Identifier BLOCK_SPEED_ID = Identifier.of("ancestralpowers", "super_block_speed");
-    private static final Identifier SNEAKING_SPEED_ID = Identifier.of("ancestralpowers", "super_sneaking_speed");
+    private static final UUID MOVEMENT_SPEED_ID = UUID.nameUUIDFromBytes("ancestralpowers:super_speed".getBytes());
+    private static final UUID ATTACK_SPEED_ID = UUID.nameUUIDFromBytes("ancestralpowers:super_attack_speed".getBytes());
 
     @Override
     protected float staminaCost() {
@@ -28,56 +26,40 @@ public class SpeedPower extends PowerBase {
     }
 
     @Override
-    protected void disablePowerSpecific(ServerPlayerEntity player) {
-        EntityAttributeInstance movementSpeedAttr = player.getAttributeInstance(EntityAttributes.MOVEMENT_SPEED);
-        EntityAttributeInstance attackSpeedAttr = player.getAttributeInstance(EntityAttributes.ATTACK_SPEED);
-        EntityAttributeInstance submergedSpeedAttr = player.getAttributeInstance(EntityAttributes.SUBMERGED_MINING_SPEED);
-        EntityAttributeInstance blockSpeedAttr = player.getAttributeInstance(EntityAttributes.BLOCK_BREAK_SPEED);
-        EntityAttributeInstance sneakingSpeedAttr = player.getAttributeInstance(EntityAttributes.SNEAKING_SPEED);
+     protected void disablePowerSpecific(ServerPlayerEntity player) {
+         EntityAttributeInstance movementSpeedAttr = player.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
+         EntityAttributeInstance attackSpeedAttr = player.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_SPEED);
 
-        removeModifier(movementSpeedAttr, MOVEMENT_SPEED_ID);
-        removeModifier(attackSpeedAttr, ATTACK_SPEED_ID);
-        removeModifier(submergedSpeedAttr, SUBMERGED_SPEED_ID);
-        removeModifier(blockSpeedAttr, BLOCK_SPEED_ID);
-        removeModifier(sneakingSpeedAttr, SNEAKING_SPEED_ID);
+         removeModifier(movementSpeedAttr, MOVEMENT_SPEED_ID);
+         removeModifier(attackSpeedAttr, ATTACK_SPEED_ID);
 
-        PlayerTraits traits = MyComponents.TRAITS.get(player);
-        traits.setActPower_secondary(false);
-    }
+         PlayerTraits traits = MyComponents.TRAITS.get(player);
+         traits.setActPower_secondary(false);
+     }
 
-    @Override
-    protected void executeLogic(ServerPlayerEntity player, boolean activate, float stamina) {
-        EntityAttributeInstance movementSpeedAttr = player.getAttributeInstance(EntityAttributes.MOVEMENT_SPEED);
-        EntityAttributeInstance attackSpeedAttr = player.getAttributeInstance(EntityAttributes.ATTACK_SPEED);
-        EntityAttributeInstance submergedSpeedAttr = player.getAttributeInstance(EntityAttributes.SUBMERGED_MINING_SPEED);
-        EntityAttributeInstance blockSpeedAttr = player.getAttributeInstance(EntityAttributes.BLOCK_BREAK_SPEED);
-        EntityAttributeInstance sneakingSpeedAttr = player.getAttributeInstance(EntityAttributes.SNEAKING_SPEED);
+     @Override
+     protected void executeLogic(ServerPlayerEntity player, boolean activate, float stamina) {
+         EntityAttributeInstance movementSpeedAttr = player.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
+         EntityAttributeInstance attackSpeedAttr = player.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_SPEED);
 
-        if (movementSpeedAttr == null ||attackSpeedAttr == null ||submergedSpeedAttr == null ||blockSpeedAttr == null ||sneakingSpeedAttr == null) return;
+         if (movementSpeedAttr == null ||attackSpeedAttr == null) return;
 
 
-        removeModifier(movementSpeedAttr, MOVEMENT_SPEED_ID);
-        removeModifier(attackSpeedAttr, ATTACK_SPEED_ID);
-        removeModifier(submergedSpeedAttr, SUBMERGED_SPEED_ID);
-        removeModifier(blockSpeedAttr, BLOCK_SPEED_ID);
-        removeModifier(sneakingSpeedAttr, SNEAKING_SPEED_ID);
+         removeModifier(movementSpeedAttr, MOVEMENT_SPEED_ID);
+         removeModifier(attackSpeedAttr, ATTACK_SPEED_ID);
 
-        addModifier(movementSpeedAttr, MOVEMENT_SPEED_ID, 0.1);
-        addModifier(attackSpeedAttr, ATTACK_SPEED_ID, 1.0);
-        addModifier(submergedSpeedAttr, SUBMERGED_SPEED_ID, 0.25);
-        addModifier(blockSpeedAttr, BLOCK_SPEED_ID, 0.5);
-        addModifier(sneakingSpeedAttr, SNEAKING_SPEED_ID, 0.15);
-    }
+         addModifier(movementSpeedAttr, MOVEMENT_SPEED_ID, 0.1);
+         addModifier(attackSpeedAttr, ATTACK_SPEED_ID, 1.0);
+     }
 
-    private void removeModifier(EntityAttributeInstance attr, Identifier id) {
-        if (attr == null) return;
-        EntityAttributeModifier existing = attr.getModifier(id);
-        if (existing != null) attr.removeModifier(existing);
-    }
+    private void removeModifier(EntityAttributeInstance attr, UUID id) {
+         if (attr == null) return;
+         attr.removeModifier(id);
+     }
 
-    private void addModifier(EntityAttributeInstance attr, Identifier id, double value) {
-        attr.addPersistentModifier(new EntityAttributeModifier(id, value, EntityAttributeModifier.Operation.ADD_VALUE));
-    }
+     private void addModifier(EntityAttributeInstance attr, UUID id, double value) {
+         attr.addPersistentModifier(new EntityAttributeModifier(id, "ancestralpowers_speed", value, EntityAttributeModifier.Operation.ADDITION));
+     }
 
     @Override
     public void apply(ServerPlayerEntity player, boolean activate, float stamina) {
@@ -88,16 +70,10 @@ public class SpeedPower extends PowerBase {
     @Override
     public void reset(ServerPlayerEntity player) {
 
-        EntityAttributeInstance movementSpeedAttr = player.getAttributeInstance(EntityAttributes.MOVEMENT_SPEED);
-        EntityAttributeInstance attackSpeedAttr = player.getAttributeInstance(EntityAttributes.ATTACK_SPEED);
-        EntityAttributeInstance submergedSpeedAttr = player.getAttributeInstance(EntityAttributes.SUBMERGED_MINING_SPEED);
-        EntityAttributeInstance blockSpeedAttr = player.getAttributeInstance(EntityAttributes.BLOCK_BREAK_SPEED);
-        EntityAttributeInstance sneakingSpeedAttr = player.getAttributeInstance(EntityAttributes.SNEAKING_SPEED);
+         EntityAttributeInstance movementSpeedAttr = player.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
+         EntityAttributeInstance attackSpeedAttr = player.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_SPEED);
 
-        removeModifier(movementSpeedAttr, MOVEMENT_SPEED_ID);
-        removeModifier(attackSpeedAttr, ATTACK_SPEED_ID);
-        removeModifier(submergedSpeedAttr, SUBMERGED_SPEED_ID);
-        removeModifier(blockSpeedAttr, BLOCK_SPEED_ID);
-        removeModifier(sneakingSpeedAttr, SNEAKING_SPEED_ID);
+         removeModifier(movementSpeedAttr, MOVEMENT_SPEED_ID);
+         removeModifier(attackSpeedAttr, ATTACK_SPEED_ID);
     }
 }

@@ -1,9 +1,7 @@
 package dev.joaq.ancestralpowers.item;
 
 import dev.joaq.ancestralpowers.util.DayNightDamageUtils;
-import net.minecraft.component.type.AttributeModifierSlot;
-import net.minecraft.component.type.AttributeModifiersComponent;
-import net.minecraft.component.type.TooltipDisplayComponent;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -12,24 +10,27 @@ import net.minecraft.item.AxeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-import java.util.function.Consumer;
+import com.google.common.collect.Multimap;
+
+import java.util.List;
+import java.util.UUID;
 
 public class LunarAxeItem extends AxeItem {
-    private static final Identifier BASE_DAMAGE_ID = Identifier.of("ancestralpowers", "lunar_axe_base_damage");
-    private static final Identifier BASE_ATTACK_SPEED_ID = Identifier.of("ancestralpowers", "lunar_axe_attack_speed");
+    private static final UUID BASE_DAMAGE_UUID = UUID.fromString("5c7f3e8a-1b9c-4d2e-a5f1-9e3c7b2d1a0f");
+    private static final UUID BASE_ATTACK_SPEED_UUID = UUID.fromString("3a9e2b1c-5f8d-4a7e-9b3c-1d5f8e2a9c3b");
 
     public LunarAxeItem(ToolMaterial material, float attackDamage, float attackSpeed, Item.Settings settings) {
         super(material, attackDamage, attackSpeed, settings);
     }
 
     @Override
-    public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (attacker instanceof PlayerEntity player) {
             World world = attacker.getWorld();
             long timeOfDay = world.getTimeOfDay() % 24000;
@@ -44,38 +45,43 @@ public class LunarAxeItem extends AxeItem {
             );
         }
         
-        super.postHit(stack, target, attacker);
+        return super.postHit(stack, target, attacker);
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type) {
-        textConsumer.accept(Text.literal("Relíquia Lunar").formatted(Formatting.AQUA, Formatting.BOLD));
-        textConsumer.accept(Text.literal("Talhada sob um eclipse antigo, banhada por silêncio estelar.").formatted(Formatting.BLUE));
-        textConsumer.accept(Text.literal("Seu corte floresce quando a noite cobre o mundo.").formatted(Formatting.AQUA));
-        textConsumer.accept(Text.literal("Alcança seu ápice na meia-noite e enfraquece ao meio-dia.").formatted(Formatting.GRAY));
-        textConsumer.accept(Text.literal("Escala de dano: 0.30x → 2.00x").formatted(Formatting.DARK_GRAY));
+    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+        tooltip.add(Text.literal("Relíquia Lunar").formatted(Formatting.AQUA, Formatting.BOLD));
+        tooltip.add(Text.literal("Talhada sob um eclipse antigo, banhada por silêncio estelar.").formatted(Formatting.BLUE));
+        tooltip.add(Text.literal("Seu corte floresce quando a noite cobre o mundo.").formatted(Formatting.AQUA));
+        tooltip.add(Text.literal("Alcança seu ápice na meia-noite e enfraquece ao meio-dia.").formatted(Formatting.GRAY));
+        tooltip.add(Text.literal("Escala de dano: 0.30x → 2.00x").formatted(Formatting.DARK_GRAY));
     }
 
-    public static AttributeModifiersComponent createAttributeModifiers(ToolMaterial material, float baseAttackDamage, float attackSpeed) {
-        return AttributeModifiersComponent.builder()
-            .add(
-                EntityAttributes.ATTACK_DAMAGE,
+    @Override
+    public com.google.common.collect.Multimap<net.minecraft.entity.attribute.EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
+        com.google.common.collect.Multimap<net.minecraft.entity.attribute.EntityAttribute, EntityAttributeModifier> multimap = super.getAttributeModifiers(slot);
+        
+        if (slot == EquipmentSlot.MAINHAND) {
+            multimap.put(
+                EntityAttributes.GENERIC_ATTACK_DAMAGE,
                 new EntityAttributeModifier(
-                    BASE_DAMAGE_ID,
-                    baseAttackDamage,
-                    EntityAttributeModifier.Operation.ADD_VALUE
-                ),
-                AttributeModifierSlot.MAINHAND
-            )
-            .add(
-                EntityAttributes.ATTACK_SPEED,
+                    BASE_DAMAGE_UUID,
+                    "Lunar Axe Base Damage",
+                    4.0,
+                    EntityAttributeModifier.Operation.ADDITION
+                )
+            );
+            multimap.put(
+                EntityAttributes.GENERIC_ATTACK_SPEED,
                 new EntityAttributeModifier(
-                    BASE_ATTACK_SPEED_ID,
-                    attackSpeed,
-                    EntityAttributeModifier.Operation.ADD_VALUE
-                ),
-                AttributeModifierSlot.MAINHAND
-            )
-            .build();
+                    BASE_ATTACK_SPEED_UUID,
+                    "Lunar Axe Attack Speed",
+                    -2.5,
+                    EntityAttributeModifier.Operation.ADDITION
+                )
+            );
+        }
+        
+        return multimap;
     }
 }

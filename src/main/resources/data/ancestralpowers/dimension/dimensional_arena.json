@@ -1,11 +1,13 @@
 {
-  "type": "ancestralpowers:personal_dimension_type",
+  "type": "ancestralpowers:dimensional_arena_type",
   "generator": {
     "type": "minecraft:flat",
     "settings": {
       "biome": "minecraft:the_void",
       "layers": [],
-      "structure_overrides": {}
+      "structures": {
+        "structures": {}
+      }
     }
   }
 }

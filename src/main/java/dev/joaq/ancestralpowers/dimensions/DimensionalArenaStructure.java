@@ -21,7 +21,7 @@ import java.util.Optional;
 
 public class DimensionalArenaStructure {
 
-    private static final Identifier STRUCTURE_ID = Identifier.of("ancestralpowers", "dimensional_arena");
+    private static final Identifier STRUCTURE_ID = new Identifier("ancestralpowers", "dimensional_arena");
     private static final int SPAWN_Y = 64;
 
     public static void generate(ServerWorld world, int x, int z) {
@@ -89,9 +89,9 @@ public class DimensionalArenaStructure {
         Vec3d teleportPos = new Vec3d(value, 73, value);
         EnumSet<PositionFlag> flags = EnumSet.noneOf(PositionFlag.class);
 
-        player.teleport(arenaWorld, teleportPos.x+13.5, teleportPos.y, teleportPos.z+22.5, flags, player.getYaw(), player.getPitch(), false);
-        if (target != null)
-            target.teleport(arenaWorld, teleportPos.x+13.5, teleportPos.y, teleportPos.z+2.5, flags, player.getYaw(), player.getPitch(), false);
+         player.teleport(arenaWorld, teleportPos.x+13.5, teleportPos.y, teleportPos.z+22.5, flags, player.getYaw(), player.getPitch());
+         if (target != null)
+             target.teleport(arenaWorld, teleportPos.x+13.5, teleportPos.y, teleportPos.z+2.5, flags, player.getYaw(), player.getPitch());
 
         player.sendMessage(Text.literal("§aVocê foi teleportado para sua Dimensional Arena!"), false);
         if (target != null)
@@ -103,9 +103,9 @@ public class DimensionalArenaStructure {
         Vec3d returnPos = traits.getUsagePosition();
         if (returnPos == null) return;
 
-        ServerWorld overworld = player.getServer().getOverworld();
-        player.teleport(overworld, returnPos.x, returnPos.y, returnPos.z, EnumSet.noneOf(PositionFlag.class),
-                player.getYaw(), player.getPitch(), false);
+         ServerWorld overworld = player.getServer().getOverworld();
+         player.teleport(overworld, returnPos.x, returnPos.y, returnPos.z, EnumSet.noneOf(PositionFlag.class),
+                 player.getYaw(), player.getPitch());
         traits.clearUsagePosition();
         traits.setInArena(false);
         player.sendMessage(Text.literal("§aVocê retornou da arena."), false);

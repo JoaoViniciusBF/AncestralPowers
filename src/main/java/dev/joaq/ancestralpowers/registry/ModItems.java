@@ -7,33 +7,18 @@ import dev.joaq.ancestralpowers.item.DoubleJumpBootsItem;
 import dev.joaq.ancestralpowers.item.DashBootsItem;
 import dev.joaq.ancestralpowers.item.RepairRelicItem;
 import dev.joaq.ancestralpowers.item.TimeCheckerItem;
-import net.minecraft.component.DataComponentTypes;
+import net.minecraft.item.ItemStack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
-import net.minecraft.item.ToolMaterial;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.item.ToolMaterials;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.util.Identifier;
 
 public class ModItems {
-    private static final ToolMaterial SOLAR_MATERIAL = new ToolMaterial(
-        BlockTags.INCORRECT_FOR_IRON_TOOL,
-        250,
-        6.0f,
-        2.0f,
-        14,
-        net.minecraft.registry.tag.ItemTags.IRON_TOOL_MATERIALS
-    );
-
-    private static final ToolMaterial LUNAR_MATERIAL = new ToolMaterial(
-        BlockTags.INCORRECT_FOR_IRON_TOOL,
-        250,
-        6.0f,
-        2.0f,
-        14,
-        net.minecraft.registry.tag.ItemTags.IRON_TOOL_MATERIALS
-    );
+    private static final Object SOLAR_MATERIAL = ToolMaterials.IRON;
+    private static final Object LUNAR_MATERIAL = ToolMaterials.IRON;
 
     public static final Item TIME_CHECKER = register("time_checker",
         settings -> new TimeCheckerItem(settings),
@@ -49,33 +34,28 @@ public class ModItems {
         settings -> new DoubleJumpBootsItem(settings),
         new Item.Settings()
             .maxCount(1)
-            .equippableUnswappable(EquipmentSlot.FEET)
     );
 
     public static final Item DASH_BOOTS = register("dash_boots",
         settings -> new DashBootsItem(settings),
         new Item.Settings()
             .maxCount(1)
-            .equippableUnswappable(EquipmentSlot.FEET)
     );
 
     public static final Item SOLAR_AXE = register("solar_axe",
-        settings -> new SolarAxeItem(SOLAR_MATERIAL, 5.0f, -3.0f, settings),
+        settings -> new SolarAxeItem((net.minecraft.item.ToolMaterial) SOLAR_MATERIAL, 5.0f, -3.0f, settings),
         new Item.Settings()
-            .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, 
-                SolarAxeItem.createAttributeModifiers(SOLAR_MATERIAL, 5.0f, -3.0f))
     );
 
     public static final Item LUNAR_AXE = register("lunar_axe",
-        settings -> new LunarAxeItem(LUNAR_MATERIAL, 5.0f, -3.0f, settings),
+        settings -> new LunarAxeItem((net.minecraft.item.ToolMaterial) LUNAR_MATERIAL, 5.0f, -3.0f, settings),
         new Item.Settings()
-            .component(DataComponentTypes.ATTRIBUTE_MODIFIERS, 
-                LunarAxeItem.createAttributeModifiers(LUNAR_MATERIAL, 5.0f, -3.0f))
     );
 
     private static Item register(String path, java.util.function.Function<Item.Settings, Item> factory, Item.Settings settings) {
-        final RegistryKey<Item> registryKey = RegistryKey.of(RegistryKeys.ITEM, AncestralPowers.identifier(path));
-        return Items.register(registryKey, factory, settings);
+        final Identifier id = AncestralPowers.identifier(path);
+        Item item = factory.apply(settings);
+        return Registry.register(Registries.ITEM, id, item);
     }
 
     public static void register() {

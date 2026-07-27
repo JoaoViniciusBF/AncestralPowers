@@ -6,8 +6,10 @@ import dev.joaq.ancestralpowers.networking.packet.c2s.DoubleJumpPayload;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.Vec3d;
 
 @Environment(EnvType.CLIENT)
@@ -42,23 +44,25 @@ public class DoubleJumpHandler {
                 hasDoubleJumped = true;
                 Vec3d vel = client.player.getVelocity();
                 
-                // Keep X and Z exact momentum, just add jump height
                 client.player.setVelocity(vel.x, 0.42, vel.z);
-                ClientPlayNetworking.send(new DoubleJumpPayload());
+                PacketByteBuf buf = PacketByteBufs.create();
+                DoubleJumpPayload.write(buf);
+                ClientPlayNetworking.send(DoubleJumpPayload.ID, buf);
                 
             } else if (boots.getItem() instanceof DashBootsItem) {
                 hasDoubleJumped = true;
                 Vec3d vel = client.player.getVelocity();
                 Vec3d look = client.player.getRotationVector();
                 
-                // Add jump height + forward boost based on where they are looking
                 double boostMultiplier = 0.5;
                 client.player.setVelocity(
                     vel.x + (look.x * boostMultiplier), 
                     0.42, 
                     vel.z + (look.z * boostMultiplier)
                 );
-                ClientPlayNetworking.send(new DoubleJumpPayload());
+                PacketByteBuf buf = PacketByteBufs.create();
+                DoubleJumpPayload.write(buf);
+                ClientPlayNetworking.send(DoubleJumpPayload.ID, buf);
             }
         }
         

@@ -11,32 +11,33 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 
 public class ModPacketsC2S {
 
     public static void register() {
-        ServerPlayNetworking.registerGlobalReceiver(ToggleRPayload.PAYLOAD_ID, (payload, context) -> {
-            ServerPlayerEntity player = context.player();
-            player.getServer().execute(() -> {
+        ServerPlayNetworking.registerGlobalReceiver(ToggleRPayload.ID, (server, player, handler, buf, sender) -> {
+            ToggleRPayload payload = ToggleRPayload.read(buf);
+            server.execute(() -> {
                 PlayerTraits traits = MyComponents.TRAITS.get(player);
                 traits.setActPower_main(!traits.getActPower_main());
                 player.sendMessage(Text.literal("R = " + traits.getActPower_main()), false);
             });
         });
 
-        ServerPlayNetworking.registerGlobalReceiver(ToggleGPayload.PAYLOAD_ID, (payload, context) -> {
-            ServerPlayerEntity player = context.player();
-            player.getServer().execute(() -> {
+        ServerPlayNetworking.registerGlobalReceiver(ToggleGPayload.ID, (server, player, handler, buf, sender) -> {
+            ToggleGPayload payload = ToggleGPayload.read(buf);
+            server.execute(() -> {
                 PlayerTraits traits = MyComponents.TRAITS.get(player);
                 traits.setActPower_secondary(!traits.getActPower_secondary());
                 player.sendMessage(Text.literal("G = " + traits.getActPower_secondary()), false);
             });
         });
 
-        ServerPlayNetworking.registerGlobalReceiver(DoubleJumpPayload.PAYLOAD_ID, (payload, context) -> {
-            ServerPlayerEntity player = context.player();
-            player.getServer().execute(() -> {
+        ServerPlayNetworking.registerGlobalReceiver(DoubleJumpPayload.ID, (server, player, handler, buf, sender) -> {
+            DoubleJumpPayload payload = DoubleJumpPayload.read(buf);
+            server.execute(() -> {
                 player.fallDistance = 0;
 
                 net.minecraft.server.world.ServerWorld world = (net.minecraft.server.world.ServerWorld) player.getWorld();
@@ -50,8 +51,16 @@ public class ModPacketsC2S {
             });
         });
 
-        ServerPlayNetworking.registerGlobalReceiver(OffhandAttackC2SPayload.ID, (payload, context) -> {
-            OffhandMod.setOverride(context.player(), true);
+        ServerPlayNetworking.registerGlobalReceiver(OffhandAttackC2SPayload.ID, (server, player, handler, buf, sender) -> {
+            OffhandAttackC2SPayload payload = OffhandAttackC2SPayload.read(buf);
+            server.execute(() -> {
+                player.stopUsingItem();
+                OffhandMod.setOverride(player, true);
+                var target = player.getWorld().getEntityById(payload.targetId());
+                if (target != null) {
+                    player.attack(target);
+                }
+            });
         });
     }
 }

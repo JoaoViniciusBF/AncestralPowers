@@ -1,18 +1,16 @@
 package dev.joaq.ancestralpowers.networking.packet.c2s;
 
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.Identifier;
 
-public record OffhandAttackC2SPayload() implements CustomPayload {
-    public static final CustomPayload.Id<OffhandAttackC2SPayload> ID =
-        new CustomPayload.Id<>(Identifier.of("ancestralpowers", "offhand_attack"));
-    public static final PacketCodec<PacketByteBuf, OffhandAttackC2SPayload> CODEC =
-        PacketCodec.unit(new OffhandAttackC2SPayload());
-
-    @Override
-    public Id<? extends CustomPayload> getId() {
-        return ID;
+public record OffhandAttackC2SPayload(int targetId) {
+    public static final Identifier ID = new Identifier("ancestralpowers", "offhand_attack");
+    
+    public static void write(PacketByteBuf buf, int targetId) {
+        buf.writeInt(targetId);
+    }
+    
+    public static OffhandAttackC2SPayload read(PacketByteBuf buf) {
+        return new OffhandAttackC2SPayload(buf.readInt());
     }
 }

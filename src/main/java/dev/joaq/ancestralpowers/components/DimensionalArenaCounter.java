@@ -1,11 +1,10 @@
 package dev.joaq.ancestralpowers.components;
 
-import com.mojang.serialization.Codec;
 import dev.joaq.ancestralpowers.AncestralPowers;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.PersistentState;
-import net.minecraft.world.PersistentStateType;
 import net.minecraft.world.World;
 
 public class DimensionalArenaCounter extends PersistentState {
@@ -27,17 +26,29 @@ public class DimensionalArenaCounter extends PersistentState {
         return dimensionalArenaCounter;
     }
 
+    @Override
+    public NbtCompound writeNbt(NbtCompound nbt) {
+        nbt.putInt("dimensionalArenaCounter", dimensionalArenaCounter);
+        return nbt;
+    }
+
+    public static DimensionalArenaCounter createFromNbt(NbtCompound nbt) {
+        DimensionalArenaCounter state = new DimensionalArenaCounter();
+        state.dimensionalArenaCounter = nbt.getInt("dimensionalArenaCounter");
+        return state;
+    }
+
+    private static final PersistentState.Type<DimensionalArenaCounter> TYPE = 
+            new PersistentState.Type<>(
+                () -> new DimensionalArenaCounter(),
+                DimensionalArenaCounter::createFromNbt,
+                null
+            );
+
     public static DimensionalArenaCounter getServerState(MinecraftServer server) {
         ServerWorld serverWorld = server.getWorld(World.OVERWORLD);
         assert serverWorld != null;
-        DimensionalArenaCounter state = serverWorld.getPersistentStateManager().getOrCreate(
-                new PersistentStateType<>(
-                        AncestralPowers.MOD_ID,
-                        DimensionalArenaCounter::new,
-                        Codec.INT.fieldOf("dimensionalArenaCounter").codec().xmap(DimensionalArenaCounter::new, DimensionalArenaCounter::getCount),
-                        null
-                )
-        );
-        return state;
+        String key = AncestralPowers.MOD_ID + "_dimensional_arena";
+        return serverWorld.getPersistentStateManager().getOrCreate(TYPE, key);
     }
 }

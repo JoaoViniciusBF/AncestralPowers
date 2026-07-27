@@ -2,11 +2,10 @@ package dev.joaq.ancestralpowers.offhand;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.AttributeModifierSlot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 
 import java.util.Map;
 import java.util.UUID;
@@ -63,19 +62,20 @@ public class OffhandMod {
     }
 
     public static int getOffhandAttackDelay(ItemStack stack) {
-        double speed = 4.0;
-        var mods = stack.get(DataComponentTypes.ATTRIBUTE_MODIFIERS);
-        if (mods != null) {
-            for (var entry : mods.modifiers()) {
-                if ((entry.slot() == AttributeModifierSlot.MAINHAND || entry.slot() == AttributeModifierSlot.OFFHAND)
-                    && entry.attribute().value() == EntityAttributes.ATTACK_SPEED.value()
-                    && entry.modifier().operation() == net.minecraft.entity.attribute.EntityAttributeModifier.Operation.ADD_VALUE) {
-                    speed += entry.modifier().value();
-                }
-            }
-        }
-        return Math.max(2, (int) Math.round(20.0 / Math.max(0.1, speed)));
-    }
+         double speed = 4.0;
+         var modifiers = stack.getAttributeModifiers(EquipmentSlot.OFFHAND);
+         for (var entry : modifiers.entries()) {
+             if (entry.getKey() == EntityAttributes.GENERIC_ATTACK_SPEED) {
+                 if (entry.getValue().getOperation() == net.minecraft.entity.attribute.EntityAttributeModifier.Operation.ADDITION) {
+                     speed += entry.getValue().getValue();
+                 }
+             }
+         }
+         
+         double effectiveSpeed = speed * 0.8 + 0.8;
+         int ticks = (int) Math.ceil(20.0 / Math.max(0.1, effectiveSpeed));
+         return Math.max(4, ticks);
+     }
 
     public static float getOffhandCooldownProgress(PlayerEntity player, ItemStack offhand) {
         int cd = OFFHAND_COOLDOWN.getOrDefault(player.getUuid(), 0);

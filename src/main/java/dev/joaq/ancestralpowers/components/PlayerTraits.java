@@ -1,10 +1,9 @@
 package dev.joaq.ancestralpowers.components;
 
 
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.Vec3d;
-import org.ladysnake.cca.api.v3.component.Component;
+import dev.onyxstudios.cca.api.v3.component.Component;
 
 import java.util.UUID;
 
@@ -245,60 +244,33 @@ public interface PlayerTraits extends Component {
 
 
         @Override
-        public void writeData(WriteView writeView) {
-            writeView.putString("movement", movement != null ? movement : "");
-            writeView.putString("main", main != null ? main : "");
-            writeView.putString("intelligence", intelligence != null ? intelligence : "");
+        public void readFromNbt(NbtCompound tag) {
+            this.movement = tag.getString("movement");
+            this.main = tag.getString("main");
+            this.intelligence = tag.getString("intelligence");
+            this.Generated = tag.getBoolean("Generated");
+            this.value = tag.getInt("value");
 
-            writeView.putBoolean("Generated",Generated);
-            writeView.putBoolean("Generated2",Generated2);
+            this.Generated2 = tag.getBoolean("Generated2");
+            this.value2 = tag.getInt("value2");
 
-            writeView.putBoolean("actPower_main",actPower_main);
-            writeView.putBoolean("actPower_secondary",actPower_secondary);
-
-            writeView.putFloat("stamina",stamina);
-
-            writeView.putInt("value",value);
-            writeView.putInt("value2",value2);
-
-            if (usagePosition != null) {
-                writeView.putDouble("usagePosX", usagePosition.x);
-                writeView.putDouble("usagePosY", usagePosition.y);
-                writeView.putDouble("usagePosZ", usagePosition.z);
-            }
-            if (arenaTarget != null) {
-                writeView.putString("arenaTarget",arenaTarget.toString());
-            }
-        }
-
-        @Override
-        public void readData(ReadView readView) {
-            this.movement = readView.getString("movement", movement);
-            this.main = readView.getString("main", main);
-            this.intelligence = readView.getString("intelligence", intelligence);
-            this.Generated = readView.getBoolean("Generated", Generated);
-            this.value = readView.getInt("value", value);
-
-            this.Generated2 = readView.getBoolean("Generated2", Generated2);
-            this.value2 = readView.getInt("value2", value2);
-
-            this.actPower_main = readView.getBoolean("actPower_main", actPower_main);
-            this.actPower_secondary = readView.getBoolean("actPower_secondary", actPower_secondary);
-            if (readView.contains("stamina")) {
-                this.stamina = readView.getFloat("stamina", 100f);
+            this.actPower_main = tag.getBoolean("actPower_main");
+            this.actPower_secondary = tag.getBoolean("actPower_secondary");
+            if (tag.contains("stamina")) {
+                this.stamina = tag.getFloat("stamina");
             } else if (this.stamina == null) {
                 this.stamina = 100f;
             }
-            if (readView.contains("usagePosX")) {
-                double x = readView.getDouble("usagePosX", 0);
-                double y = readView.getDouble("usagePosY", 0);
-                double z = readView.getDouble("usagePosZ", 0);
+            if (tag.contains("usagePosX")) {
+                double x = tag.getDouble("usagePosX");
+                double y = tag.getDouble("usagePosY");
+                double z = tag.getDouble("usagePosZ");
                 this.usagePosition = new Vec3d(x, y, z);
             } else {
                 this.usagePosition = null;
             }
-            if (readView.contains("arenaTarget")) {
-                String uuidStr = readView.getString("arenaTarget", "");
+            if (tag.contains("arenaTarget")) {
+                String uuidStr = tag.getString("arenaTarget");
                 if (!uuidStr.isEmpty()) {
                     this.arenaTarget = UUID.fromString(uuidStr);
                 } else {
@@ -306,6 +278,33 @@ public interface PlayerTraits extends Component {
                 }
             } else {
                 this.arenaTarget = null;
+            }
+        }
+
+        @Override
+        public void writeToNbt(NbtCompound tag) {
+            tag.putString("movement", movement != null ? movement : "");
+            tag.putString("main", main != null ? main : "");
+            tag.putString("intelligence", intelligence != null ? intelligence : "");
+
+            tag.putBoolean("Generated", Generated);
+            tag.putBoolean("Generated2", Generated2);
+
+            tag.putBoolean("actPower_main", actPower_main);
+            tag.putBoolean("actPower_secondary", actPower_secondary);
+
+            tag.putFloat("stamina", stamina);
+
+            tag.putInt("value", value);
+            tag.putInt("value2", value2);
+
+            if (usagePosition != null) {
+                tag.putDouble("usagePosX", usagePosition.x);
+                tag.putDouble("usagePosY", usagePosition.y);
+                tag.putDouble("usagePosZ", usagePosition.z);
+            }
+            if (arenaTarget != null) {
+                tag.putString("arenaTarget", arenaTarget.toString());
             }
         }
 

@@ -1,8 +1,6 @@
 package dev.joaq.ancestralpowers.item;
 
-import net.minecraft.component.type.AttributeModifierSlot;
-import net.minecraft.component.type.AttributeModifiersComponent;
-import net.minecraft.component.type.TooltipDisplayComponent;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -12,16 +10,21 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.World;
+
+import com.google.common.collect.Multimap;
 
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.UUID;
 
 public class EffectDaggerItem extends Item {
+    private static final UUID BASE_DAMAGE_UUID = UUID.fromString("72f90b4a-8b2e-4c1f-9e3d-5a7c2b1e8d4f");
+    private static final UUID BASE_ATTACK_SPEED_UUID = UUID.fromString("8c3f2e9a-5d1b-4a7e-9c3e-2f8a1d5b9e4c");
     private static final List<EffectPair> EFFECT_PAIRS = List.of(
         new EffectPair(StatusEffects.POISON, StatusEffects.REGENERATION),
         new EffectPair(StatusEffects.SLOWNESS, StatusEffects.SPEED),
@@ -44,51 +47,56 @@ public class EffectDaggerItem extends Item {
     }
 
     @Override
-    public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         EffectPair pair = EFFECT_PAIRS.get(attacker.getRandom().nextInt(EFFECT_PAIRS.size()));
-        RegistryEntry<StatusEffect> effect = inverted ? pair.positive() : pair.negative();
+        StatusEffect effect = inverted ? pair.positive() : pair.negative();
         target.addStatusEffect(new StatusEffectInstance(effect, 160, 0), attacker);
-        super.postHit(stack, target, attacker);
+        return super.postHit(stack, target, attacker);
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type) {
+    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
         if (inverted) {
-            textConsumer.accept(Text.literal("Lâmina de Inversão").formatted(titleColor, Formatting.BOLD));
-            textConsumer.accept(Text.literal("Transforma maldições em bênçãos temporárias no alvo.").formatted(loreColor));
-            textConsumer.accept(Text.literal("Criada para preparar presas ricas em efeitos positivos.").formatted(Formatting.GRAY));
+            tooltip.add(Text.literal("Lâmina de Inversão").formatted(titleColor, Formatting.BOLD));
+            tooltip.add(Text.literal("Transforma maldições em bênçãos temporárias no alvo.").formatted(loreColor));
+            tooltip.add(Text.literal("Criada para preparar presas ricas em efeitos positivos.").formatted(Formatting.GRAY));
         } else {
-            textConsumer.accept(Text.literal("Lâmina de Aflição").formatted(titleColor, Formatting.BOLD));
-            textConsumer.accept(Text.literal("Injeta uma maldição aleatória em quem recebe o corte.").formatted(loreColor));
-            textConsumer.accept(Text.literal("Cada aflição possui uma bênção espelhada na adaga inversa.").formatted(Formatting.GRAY));
+            tooltip.add(Text.literal("Lâmina de Aflição").formatted(titleColor, Formatting.BOLD));
+            tooltip.add(Text.literal("Injeta uma maldição aleatória em quem recebe o corte.").formatted(loreColor));
+            tooltip.add(Text.literal("Cada aflição possui uma bênção espelhada na adaga inversa.").formatted(Formatting.GRAY));
         }
-        textConsumer.accept(Text.literal("Pares: Veneno/Regeneração, Lentidão/Velocidade, Fraqueza/Força").formatted(Formatting.DARK_GRAY));
-        textConsumer.accept(Text.literal("Fadiga/Pressa, Cegueira/Visão Noturna, Fome/Saturação, Wither/Absorção").formatted(Formatting.DARK_GRAY));
+        tooltip.add(Text.literal("Pares: Veneno/Regeneração, Lentidão/Velocidade, Fraqueza/Força").formatted(Formatting.DARK_GRAY));
+        tooltip.add(Text.literal("Fadiga/Pressa, Cegueira/Visão Noturna, Fome/Saturação, Wither/Absorção").formatted(Formatting.DARK_GRAY));
     }
 
-    public static AttributeModifiersComponent createAttributeModifiers(String path, float baseAttackDamage, float attackSpeed) {
-        return AttributeModifiersComponent.builder()
-            .add(
-                EntityAttributes.ATTACK_DAMAGE,
+    @Override
+    public com.google.common.collect.Multimap<net.minecraft.entity.attribute.EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
+        com.google.common.collect.Multimap<net.minecraft.entity.attribute.EntityAttribute, EntityAttributeModifier> multimap = super.getAttributeModifiers(slot);
+        
+        if (slot == EquipmentSlot.MAINHAND) {
+            multimap.put(
+                EntityAttributes.GENERIC_ATTACK_DAMAGE,
                 new EntityAttributeModifier(
-                    Identifier.of("ancestralpowers", path + "_base_damage"),
-                    baseAttackDamage,
-                    EntityAttributeModifier.Operation.ADD_VALUE
-                ),
-                AttributeModifierSlot.MAINHAND
-            )
-            .add(
-                EntityAttributes.ATTACK_SPEED,
+                    BASE_DAMAGE_UUID,
+                    "Effect Dagger Base Damage",
+                    2.0,
+                    EntityAttributeModifier.Operation.ADDITION
+                )
+            );
+            multimap.put(
+                EntityAttributes.GENERIC_ATTACK_SPEED,
                 new EntityAttributeModifier(
-                    Identifier.of("ancestralpowers", path + "_attack_speed"),
-                    attackSpeed,
-                    EntityAttributeModifier.Operation.ADD_VALUE
-                ),
-                AttributeModifierSlot.MAINHAND
-            )
-            .build();
+                    BASE_ATTACK_SPEED_UUID,
+                    "Effect Dagger Attack Speed",
+                    1.5,
+                    EntityAttributeModifier.Operation.ADDITION
+                )
+            );
+        }
+        
+        return multimap;
     }
 
-    private record EffectPair(RegistryEntry<StatusEffect> negative, RegistryEntry<StatusEffect> positive) {
+    private record EffectPair(StatusEffect negative, StatusEffect positive) {
     }
 }

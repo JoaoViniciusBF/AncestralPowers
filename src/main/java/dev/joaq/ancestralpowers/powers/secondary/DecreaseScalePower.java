@@ -7,24 +7,22 @@ import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
+
+import java.util.UUID;
 
 public class DecreaseScalePower extends PowerBase {
 
-    private static final Identifier SCALE_ID = Identifier.of("ancestralpowers", "scale");
-    private static final Identifier MOVEMENT_SPEED_ID = Identifier.of("ancestralpowers", "move_speed");
-    private static final Identifier JUMP_STRENGTH_ID = Identifier.of("ancestralpowers", "jump_strength");
+    private static final UUID MOVEMENT_SPEED_ID = UUID.nameUUIDFromBytes("ancestralpowers:move_speed".getBytes());
 
     private static final double INCREMENT = -0.25;
     private static final double MIN_SCALE = 0.5;
     private static final double MAX_SCALE = 16.0;
     private static final double EPS = 0.001;
 
-    private void removeModifier(EntityAttributeInstance attr, Identifier id) {
-        if (attr == null) return;
-        EntityAttributeModifier existing = attr.getModifier(id);
-        if (existing != null) attr.removeModifier(existing);
-    }
+    private void removeModifier(EntityAttributeInstance attr, UUID id) {
+         if (attr == null) return;
+         attr.removeModifier(id);
+     }
 
     @Override
     protected float staminaCost() {
@@ -38,13 +36,9 @@ public class DecreaseScalePower extends PowerBase {
 
     @Override
     protected void disablePowerSpecific(ServerPlayerEntity player) {
-        EntityAttributeInstance scaleAttr = player.getAttributeInstance(EntityAttributes.SCALE);
-        EntityAttributeInstance speedAttr = player.getAttributeInstance(EntityAttributes.MOVEMENT_SPEED);
-        EntityAttributeInstance jumpAttr = player.getAttributeInstance(EntityAttributes.JUMP_STRENGTH);
+        EntityAttributeInstance speedAttr = player.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
 
-        removeModifier(scaleAttr, SCALE_ID);
         removeModifier(speedAttr, MOVEMENT_SPEED_ID);
-        removeModifier(jumpAttr, JUMP_STRENGTH_ID);
 
         PlayerTraits traits = MyComponents.TRAITS.get(player);
         traits.setScaleMultiplier(1.0);
@@ -54,10 +48,8 @@ public class DecreaseScalePower extends PowerBase {
 
     @Override
     protected void executeLogic(ServerPlayerEntity player, boolean activate, float stamina) {
-        EntityAttributeInstance scaleAttr = player.getAttributeInstance(EntityAttributes.SCALE);
-        EntityAttributeInstance speedAttr = player.getAttributeInstance(EntityAttributes.MOVEMENT_SPEED);
-        EntityAttributeInstance jumpAttr = player.getAttributeInstance(EntityAttributes.JUMP_STRENGTH);
-        if (scaleAttr == null || speedAttr == null || jumpAttr == null) return;
+        EntityAttributeInstance speedAttr = player.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
+        if (speedAttr == null) return;
 
         PlayerTraits traits = MyComponents.TRAITS.get(player);
         double currentScale = traits.getScaleMultiplier();
@@ -66,26 +58,14 @@ public class DecreaseScalePower extends PowerBase {
         next = Math.max(MIN_SCALE, Math.min(MAX_SCALE, next));
 
         if (Math.abs(next - 1.0) < EPS) {
-            removeModifier(scaleAttr, SCALE_ID);
             removeModifier(speedAttr, MOVEMENT_SPEED_ID);
-            removeModifier(jumpAttr, JUMP_STRENGTH_ID);
             traits.setScaleMultiplier(1.0);
             return;
         }
 
-        scaleAttr.removeModifier(SCALE_ID);
-        scaleAttr.addPersistentModifier(new EntityAttributeModifier(
-                SCALE_ID, next - 1.0, EntityAttributeModifier.Operation.ADD_VALUE
-        ));
-
         speedAttr.removeModifier(MOVEMENT_SPEED_ID);
         speedAttr.addPersistentModifier(new EntityAttributeModifier(
-                MOVEMENT_SPEED_ID, next / 10.0 - 0.1, EntityAttributeModifier.Operation.ADD_VALUE
-        ));
-
-        jumpAttr.removeModifier(JUMP_STRENGTH_ID);
-        jumpAttr.addPersistentModifier(new EntityAttributeModifier(
-                JUMP_STRENGTH_ID, next - 1.0, EntityAttributeModifier.Operation.ADD_VALUE
+                MOVEMENT_SPEED_ID, "ancestralpowers_move_speed", next / 10.0 - 0.1, EntityAttributeModifier.Operation.ADDITION
         ));
 
         traits.setScaleMultiplier(next);

@@ -10,7 +10,7 @@ import net.minecraft.util.Identifier;
 public class ModEffects {
     public static final RegistryEntry<StatusEffect> POWER_SUPPRESSION = Registry.registerReference(
             Registries.STATUS_EFFECT,
-            Identifier.of("ancestralpowers", "power_suppression"),
+            new Identifier("ancestralpowers", "power_suppression"),
             new PowerSuppressionEffect()
     );
 

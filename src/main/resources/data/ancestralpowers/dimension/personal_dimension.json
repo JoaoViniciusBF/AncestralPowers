@@ -5,7 +5,9 @@
     "settings": {
       "biome": "minecraft:the_void",
       "layers": [],
-      "structure_overrides": {}
+      "structures": {
+        "structures": {}
+      }
     }
   }
 }

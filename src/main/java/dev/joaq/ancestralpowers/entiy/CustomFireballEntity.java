@@ -27,9 +27,9 @@ public class CustomFireballEntity extends FireballEntity {
         super(type, world);
     }
 
-    public CustomFireballEntity(World world, LivingEntity owner, double dirX, double dirY, double dirZ) {
-        super(world, owner, new Vec3d(dirX, dirY, dirZ), 1);
-    }
+     public CustomFireballEntity(World world, LivingEntity owner, double dirX, double dirY, double dirZ) {
+         super(world, owner, dirX, dirY, dirZ, 1);
+     }
 
     public void setExplosionPower(float power) {
         this.explosionPower = power;

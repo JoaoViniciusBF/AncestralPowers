@@ -1,13 +1,13 @@
 package dev.joaq.ancestralpowers.item;
 
-import net.minecraft.component.type.TooltipDisplayComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.world.World;
 
-import java.util.function.Consumer;
+import java.util.List;
 
 public class DashBootsItem extends Item {
     public DashBootsItem(Settings settings) {
@@ -15,10 +15,10 @@ public class DashBootsItem extends Item {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type) {
-        textConsumer.accept(Text.literal("Botas do Impulso Etéreo").formatted(Formatting.GOLD, Formatting.BOLD));
-        textConsumer.accept(Text.literal("Tecidas com plumas de relâmpago e trovão engarrafado.").formatted(Formatting.YELLOW));
-        textConsumer.accept(Text.literal("Permitem um segundo salto que te lança furiosamente para frente.").formatted(Formatting.GOLD));
-        textConsumer.accept(Text.literal("Libera faíscas ao disparar no ar.").formatted(Formatting.GRAY));
+    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+        tooltip.add(Text.literal("Botas do Impulso Etéreo").formatted(Formatting.GOLD, Formatting.BOLD));
+        tooltip.add(Text.literal("Tecidas com plumas de relâmpago e trovão engarrafado.").formatted(Formatting.YELLOW));
+        tooltip.add(Text.literal("Permitem um segundo salto que te lança furiosamente para frente.").formatted(Formatting.GOLD));
+        tooltip.add(Text.literal("Libera faíscas ao disparar no ar.").formatted(Formatting.GRAY));
     }
 }

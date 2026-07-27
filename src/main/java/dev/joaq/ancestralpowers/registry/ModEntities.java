@@ -13,10 +13,9 @@ import net.minecraft.util.Identifier;
 public class ModEntities {
     public static final EntityType<CustomFireballEntity> CUSTOM_FIREBALL = Registry.register(
             Registries.ENTITY_TYPE,
-            Identifier.of("ancestralpowers", "custom_fireball"),
+            new Identifier("ancestralpowers", "custom_fireball"),
             EntityType.Builder.<CustomFireballEntity>create(CustomFireballEntity::new, SpawnGroup.MISC)
-                    .dimensions(1.0f, 1.0f) // largura e altura da fireball
-                    .build(RegistryKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of("ancestralpowers", "custom_fireball")))
+                    .build()
     );
 
 

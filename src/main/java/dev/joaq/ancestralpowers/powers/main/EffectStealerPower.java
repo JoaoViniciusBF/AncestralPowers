@@ -53,8 +53,8 @@ public class EffectStealerPower extends PowerBase {
 
         List<StatusEffectInstance> positiveEffects = new ArrayList<>();
         
-        for (StatusEffectInstance effect : target.getStatusEffects()) {
-            if (effect.getEffectType().value().getCategory() == StatusEffectCategory.BENEFICIAL) {
+         for (StatusEffectInstance effect : target.getStatusEffects()) {
+             if (effect.getEffectType().getCategory() == StatusEffectCategory.BENEFICIAL) {
                 positiveEffects.add(new StatusEffectInstance(
                     effect.getEffectType(),
                     effect.getDuration(),

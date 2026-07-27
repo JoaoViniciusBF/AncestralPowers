@@ -22,8 +22,9 @@ public class StaminaHudOverlay {
     private static boolean receivedFirstPacket = false;
 
     public static void register() {
-        ClientPlayNetworking.registerGlobalReceiver(StaminaSyncPayload.PAYLOAD_ID, (payload, context) -> {
-            context.client().execute(() -> {
+        ClientPlayNetworking.registerGlobalReceiver(StaminaSyncPayload.ID, (client, handler, buf, sender) -> {
+            StaminaSyncPayload payload = StaminaSyncPayload.read(buf);
+            client.execute(() -> {
                 clientStamina = payload.currentStamina();
                 clientMaxStamina = payload.maxStamina();
                 receivedFirstPacket = true;
@@ -37,7 +38,7 @@ public class StaminaHudOverlay {
             return;
         }
 
-        float ratio = Math.clamp(clientStamina / clientMaxStamina, 0f, 1f);
+        float ratio = Math.max(0f, Math.min(clientStamina / clientMaxStamina, 1f));
         int percentage = Math.round(ratio * 100);
         int centerX = context.getScaledWindowWidth() - 32;
         int centerY = context.getScaledWindowHeight() - 32;

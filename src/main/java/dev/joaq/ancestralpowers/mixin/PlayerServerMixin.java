@@ -40,13 +40,8 @@ public class PlayerServerMixin {
         ci.cancel();
     }
 
-    private static boolean hasAttackDamage(net.minecraft.item.ItemStack stack) {
-        var mods = stack.get(net.minecraft.component.DataComponentTypes.ATTRIBUTE_MODIFIERS);
-        if (mods == null) return false;
-        for (var entry : mods.modifiers()) {
-            if (entry.attribute().value() == net.minecraft.entity.attribute.EntityAttributes.ATTACK_DAMAGE.value())
-                return true;
-        }
-        return false;
-    }
+     private static boolean hasAttackDamage(net.minecraft.item.ItemStack stack) {
+         var modifiers = stack.getAttributeModifiers(net.minecraft.entity.EquipmentSlot.MAINHAND);
+         return !modifiers.get(net.minecraft.entity.attribute.EntityAttributes.GENERIC_ATTACK_DAMAGE).isEmpty();
+     }
 }

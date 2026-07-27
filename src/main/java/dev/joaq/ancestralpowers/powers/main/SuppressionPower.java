@@ -37,13 +37,13 @@ public class SuppressionPower extends PowerBase {
         ServerPlayerEntity target = PlayerUtils.getPlayerLookedAt(player, 20.0D);
         if (target != null) {
 
-            target.addStatusEffect(new StatusEffectInstance(
-                    ModEffects.POWER_SUPPRESSION,
-                    2,
-                    0,
-                    true,
-                    false
-            ));
+             target.addStatusEffect(new StatusEffectInstance(
+                     ModEffects.POWER_SUPPRESSION.value(),
+                     2,
+                     0,
+                     true,
+                     false
+             ));
             target.addStatusEffect(new StatusEffectInstance(
                     StatusEffects.GLOWING,
                     2,

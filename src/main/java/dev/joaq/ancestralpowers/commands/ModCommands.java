@@ -29,7 +29,8 @@ public class ModCommands {
                             .executes(context -> {
                                 ServerCommandSource source = context.getSource();
 
-                                if (!(source.getPlayer() instanceof ServerPlayerEntity player)) {
+                                ServerPlayerEntity player = source.getPlayer();
+                                if (player == null) {
                                     source.sendFeedback(() -> Text.literal("Apenas jogadores podem usar este comando!"), false);
                                     return 0;
                                 }
@@ -70,21 +71,22 @@ public class ModCommands {
                             .executes(context -> {
                                 ServerCommandSource source = context.getSource();
 
-                                if (!(source.getPlayer() instanceof ServerPlayerEntity player)) {
+                                ServerPlayerEntity player2 = source.getPlayer();
+                                if (player2 == null) {
                                     source.sendFeedback(() -> Text.literal("Apenas jogadores podem usar este comando!"), false);
                                     return 0;
                                 }
 
-                                PowersManager.resetAll(player);
+                                PowersManager.resetAll(player2);
 
-                                PlayerTraits traits = MyComponents.TRAITS.get(player);
+                                PlayerTraits traits = MyComponents.TRAITS.get(player2);
 
                                 traits.setMainPower(RandomUtils.randomMain());
                                 traits.setMovementPower(RandomUtils.randomMovement(traits.getMainPower()));
                                 traits.setIntelligence(RandomUtils.randomIntelligence());
 
                                 // Informa o jogador
-                                player.sendMessage(Text.literal(
+                                player2.sendMessage(Text.literal(
                                         "Novos poderes: " + traits.getMovementPower() + " | " +
                                                 traits.getMainPower() + " | " + traits.getIntelligence()
                                 ), false);
@@ -134,7 +136,7 @@ public class ModCommands {
 
     private static void sendPowerOption(ServerPlayerEntity player, String power) {
         MutableText text = Text.literal("§e[ " + power + " ]")
-                .setStyle(Style.EMPTY.withClickEvent(new ClickEvent.RunCommand("/setpower " + power)));
+                .setStyle(Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/setpower " + power)));
         player.sendMessage(text, false);
     }
 }
