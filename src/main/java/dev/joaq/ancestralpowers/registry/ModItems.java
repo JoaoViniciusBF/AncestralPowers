@@ -7,6 +7,7 @@ import dev.joaq.ancestralpowers.item.DoubleJumpBootsItem;
 import dev.joaq.ancestralpowers.item.DashBootsItem;
 import dev.joaq.ancestralpowers.item.RepairRelicItem;
 import dev.joaq.ancestralpowers.item.TimeCheckerItem;
+import dev.joaq.ancestralpowers.item.EffectDaggerItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Item;
@@ -15,6 +16,7 @@ import net.minecraft.item.ToolMaterials;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Formatting;
 
 public class ModItems {
     private static final Object SOLAR_MATERIAL = ToolMaterials.IRON;
@@ -43,12 +45,22 @@ public class ModItems {
     );
 
     public static final Item SOLAR_AXE = register("solar_axe",
-        settings -> new SolarAxeItem((net.minecraft.item.ToolMaterial) SOLAR_MATERIAL, 5.0f, -3.0f, settings),
+        settings -> new SolarAxeItem((net.minecraft.item.ToolMaterial) SOLAR_MATERIAL, 5.0f, 1.0f, settings),
         new Item.Settings()
     );
 
     public static final Item LUNAR_AXE = register("lunar_axe",
-        settings -> new LunarAxeItem((net.minecraft.item.ToolMaterial) LUNAR_MATERIAL, 5.0f, -3.0f, settings),
+        settings -> new LunarAxeItem((net.minecraft.item.ToolMaterial) LUNAR_MATERIAL, 5.0f, 1.0f, settings),
+        new Item.Settings()
+    );
+
+    public static final Item AFFLICTION_DAGGER = register("affliction_dagger",
+        settings -> new EffectDaggerItem(ToolMaterials.IRON, 2.0f, 1.5f, settings, false, Formatting.RED, Formatting.DARK_RED),
+        new Item.Settings()
+    );
+
+    public static final Item INVERSION_DAGGER = register("inversion_dagger",
+        settings -> new EffectDaggerItem(ToolMaterials.IRON, 2.0f, 1.5f, settings, true, Formatting.LIGHT_PURPLE, Formatting.DARK_PURPLE),
         new Item.Settings()
     );
 
