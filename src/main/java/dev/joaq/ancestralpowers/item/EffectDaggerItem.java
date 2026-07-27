@@ -17,6 +17,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
 import java.util.List;
@@ -74,7 +75,10 @@ public class EffectDaggerItem extends Item {
         com.google.common.collect.Multimap<net.minecraft.entity.attribute.EntityAttribute, EntityAttributeModifier> multimap = super.getAttributeModifiers(slot);
         
         if (slot == EquipmentSlot.MAINHAND) {
-            multimap.put(
+            ImmutableMultimap.Builder<net.minecraft.entity.attribute.EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
+            builder.putAll(multimap);
+            
+            builder.put(
                 EntityAttributes.GENERIC_ATTACK_DAMAGE,
                 new EntityAttributeModifier(
                     BASE_DAMAGE_UUID,
@@ -83,7 +87,7 @@ public class EffectDaggerItem extends Item {
                     EntityAttributeModifier.Operation.ADDITION
                 )
             );
-            multimap.put(
+            builder.put(
                 EntityAttributes.GENERIC_ATTACK_SPEED,
                 new EntityAttributeModifier(
                     BASE_ATTACK_SPEED_UUID,
@@ -92,6 +96,8 @@ public class EffectDaggerItem extends Item {
                     EntityAttributeModifier.Operation.ADDITION
                 )
             );
+            
+            return builder.build();
         }
         
         return multimap;

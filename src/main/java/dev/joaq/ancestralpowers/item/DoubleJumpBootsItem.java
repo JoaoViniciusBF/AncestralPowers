@@ -1,6 +1,8 @@
 package dev.joaq.ancestralpowers.item;
 
-import net.minecraft.item.Item;
+import net.minecraft.item.ArmorItem;
+import net.minecraft.item.ArmorMaterials;
+import net.minecraft.item.ArmorItem.Type;
 import net.minecraft.item.ItemStack;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.text.Text;
@@ -9,9 +11,9 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class DoubleJumpBootsItem extends Item {
+public class DoubleJumpBootsItem extends ArmorItem {
     public DoubleJumpBootsItem(Settings settings) {
-        super(settings);
+        super(ArmorMaterials.IRON, Type.BOOTS, settings);
     }
 
     @Override
