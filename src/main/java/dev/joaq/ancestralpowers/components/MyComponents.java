@@ -10,15 +10,11 @@ import dev.onyxstudios.cca.api.v3.entity.RespawnCopyStrategy;
 
 public class MyComponents implements EntityComponentInitializer {
 
-    public static final ComponentKey<PlayerTraits> TRAITS =
-            ComponentRegistryV3.INSTANCE.getOrCreate(
-                    new Identifier(AncestralPowers.MOD_ID, "player_traits"), PlayerTraits.class);
-
+    public static ComponentKey<PlayerTraits> TRAITS;
 
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
-        registry.registerForPlayers(TRAITS, player -> new PlayerTraitsComponent() {
-
-        }, RespawnCopyStrategy.ALWAYS_COPY);
+        TRAITS = ComponentRegistryV3.INSTANCE.getOrCreate(new Identifier(AncestralPowers.MOD_ID, "player_traits"), PlayerTraits.class);
+        registry.registerForPlayers(TRAITS, player -> new PlayerTraitsComponent(), RespawnCopyStrategy.ALWAYS_COPY);
     }
 }

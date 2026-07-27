@@ -13,5 +13,7 @@
   "infiniburn": "#minecraft:infiniburn_overworld",
   "effects": "minecraft:overworld",
   "piglin_safe": false,
-  "has_raids": false
+  "has_raids": false,
+  "monster_spawn_block_light_limit": 0,
+  "monster_spawn_light_level": 0
 }

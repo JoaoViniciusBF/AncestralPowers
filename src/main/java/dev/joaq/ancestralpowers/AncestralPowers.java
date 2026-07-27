@@ -1,6 +1,7 @@
 package dev.joaq.ancestralpowers;
 
 import dev.joaq.ancestralpowers.commands.ModCommands;
+import dev.joaq.ancestralpowers.components.MyComponents;
 import dev.joaq.ancestralpowers.components.PersonalDimensionCounter;
 import dev.joaq.ancestralpowers.dimensions.ModDimensions;
 import dev.joaq.ancestralpowers.events.PlayerDeathEvent;

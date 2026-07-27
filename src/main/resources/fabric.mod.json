@@ -19,7 +19,15 @@
 		],
         "client": [
           "dev.joaq.ancestralpowers.AncestralPowersClient"
+        ],
+        "cardinal-components": [
+          "dev.joaq.ancestralpowers.components.MyComponents"
         ]
+	},
+	"custom": {
+		"cardinal-components": [
+			"ancestralpowers:player_traits"
+		]
 	},
 	"mixins": [
 		"ancestralpowers.mixins.json"
