@@ -25,6 +25,8 @@ public class CloneData {
         public String dimension;
         public NbtCompound effects;
         public UUID entityUuid;
+        public float yaw;
+        public float pitch;
 
         public Clone() {}
 
@@ -45,6 +47,8 @@ public class CloneData {
             this.xpProgress = player.experienceProgress;
             this.position = player.getBlockPos();
             this.dimension = player.getWorld().getRegistryKey().getValue().toString();
+            this.yaw = player.getYaw();
+            this.pitch = player.getPitch();
             
             this.effects = new NbtCompound();
             NbtList effectsList = new NbtList();
@@ -74,6 +78,8 @@ public class CloneData {
             nbt.putInt("posZ", position.getZ());
             nbt.putString("dimension", dimension);
             nbt.put("effects", effects);
+            nbt.putFloat("yaw", yaw);
+            nbt.putFloat("pitch", pitch);
             if (entityUuid != null) {
                 nbt.putUuid("entityUuid", entityUuid);
             }
@@ -92,6 +98,8 @@ public class CloneData {
             clone.position = new BlockPos(nbt.getInt("posX"), nbt.getInt("posY"), nbt.getInt("posZ"));
             clone.dimension = nbt.getString("dimension");
             clone.effects = nbt.getCompound("effects");
+            clone.yaw = nbt.contains("yaw") ? nbt.getFloat("yaw") : 0;
+            clone.pitch = nbt.contains("pitch") ? nbt.getFloat("pitch") : 0;
             if (nbt.containsUuid("entityUuid")) {
                 clone.entityUuid = nbt.getUuid("entityUuid");
             }

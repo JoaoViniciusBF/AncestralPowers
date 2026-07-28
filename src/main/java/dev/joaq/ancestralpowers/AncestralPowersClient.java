@@ -3,12 +3,16 @@ package dev.joaq.ancestralpowers;
 import dev.joaq.ancestralpowers.client.DoubleJumpHandler;
 import dev.joaq.ancestralpowers.client.ModKeyBinds;
 import dev.joaq.ancestralpowers.client.StaminaHudOverlay;
+import dev.joaq.ancestralpowers.client.renderer.NPCEntityRenderer;
 import dev.joaq.ancestralpowers.commands.InventoryPosCommand;
 import dev.joaq.ancestralpowers.networking.packet.c2s.ToggleGPayload;
 import dev.joaq.ancestralpowers.networking.packet.c2s.ToggleRPayload;
+import dev.joaq.ancestralpowers.registry.ModEntities;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
@@ -44,8 +48,10 @@ public class AncestralPowersClient implements ClientModInitializer {
             }
         });
 
-        net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
+        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             InventoryPosCommand.register(dispatcher);
         });
+
+        EntityRendererRegistry.register(ModEntities.NPC_ENTITY, NPCEntityRenderer::new);
     }
 }

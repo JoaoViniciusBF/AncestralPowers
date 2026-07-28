@@ -9,6 +9,7 @@ import dev.joaq.ancestralpowers.events.PlayerJoinEvent;
 import dev.joaq.ancestralpowers.events.PlayerPowersTickHandler;
 import dev.joaq.ancestralpowers.networking.ModPacketsC2S;
 import dev.joaq.ancestralpowers.networking.ModPacketsS2C;
+import dev.joaq.ancestralpowers.npc.NPCEntity;
 import dev.joaq.ancestralpowers.registry.ModEffects;
 import dev.joaq.ancestralpowers.registry.ModEntities;
 import dev.joaq.ancestralpowers.registry.ModItems;
@@ -17,6 +18,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +42,8 @@ public class AncestralPowers implements ModInitializer, ClientModInitializer, De
         ModEffects.register();
         ModItems.register();
         PlayerDeathEvent.ImortalRegister();
+        
+        FabricDefaultAttributeRegistry.register(ModEntities.NPC_ENTITY, NPCEntity.createAttributes());
         
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             SkinManager.loadSkins(server);

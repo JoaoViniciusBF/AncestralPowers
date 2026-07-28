@@ -4,8 +4,8 @@ import dev.joaq.ancestralpowers.components.CloneData;
 import dev.joaq.ancestralpowers.components.MyComponents;
 import dev.joaq.ancestralpowers.components.PlayerTraits;
 import dev.joaq.ancestralpowers.entity.CloneEntity;
+import dev.joaq.ancestralpowers.npc.NPCEntity;
 import dev.joaq.ancestralpowers.powers.PowerBase;
-import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
@@ -21,7 +21,7 @@ public class ClonePower extends PowerBase {
 
         int cloneNumber = cloneData.getCloneCount();
         
-        ArmorStandEntity cloneEntity = CloneEntity.createClone(player, cloneNumber);
+        NPCEntity cloneEntity = CloneEntity.createClone(player, cloneNumber);
         newClone.entityUuid = cloneEntity.getUuid();
 
         player.sendMessage(Text.literal("§aClone #" + cloneNumber + " criado com sucesso!"), false);

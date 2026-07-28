@@ -24,6 +24,7 @@ public class ModCommands {
 
             CloneCommands.registerSwitchCommand(dispatcher);
             SkinCommands.registerSkinCommands(dispatcher);
+            NPCCommands.register(dispatcher, registryAccess, environment);
 
             // Comando /gettraits
             dispatcher.register(

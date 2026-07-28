@@ -5,8 +5,9 @@ import dev.joaq.ancestralpowers.components.CloneData;
 import dev.joaq.ancestralpowers.components.MyComponents;
 import dev.joaq.ancestralpowers.components.PlayerTraits;
 import dev.joaq.ancestralpowers.entity.CloneEntity;
+import dev.joaq.ancestralpowers.npc.NPCEntity;
+import dev.joaq.ancestralpowers.npc.NPCManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.registry.RegistryKey;
@@ -66,28 +67,27 @@ public class CloneCommands {
         }
 
         CloneData.Clone targetClone = cloneData.getClone(cloneIndex);
-        CloneData.Clone currentState = new CloneData.Clone(player);
-
-        if (cloneData.getActiveCloneIndex() >= 0 && cloneData.getActiveCloneIndex() < cloneData.getCloneCount()) {
-            CloneData.Clone oldClone = cloneData.getClones().get(cloneData.getActiveCloneIndex());
-            oldClone.position = player.getBlockPos();
-            oldClone.dimension = player.getWorld().getRegistryKey().getValue().toString();
-            
-            ArmorStandEntity cloneEntity = CloneEntity.createClone(player, cloneData.getActiveCloneIndex() + 1);
-            oldClone.entityUuid = cloneEntity.getUuid();
-            
-            cloneData.getClones().set(cloneData.getActiveCloneIndex(), oldClone);
-        }
-
+        
         if (targetClone.entityUuid != null) {
             RegistryKey<World> dimensionKey = RegistryKey.of(RegistryKeys.WORLD, new Identifier(targetClone.dimension));
             ServerWorld targetWorld = player.getServer().getWorld(dimensionKey);
             if (targetWorld != null) {
                 Entity entity = targetWorld.getEntity(targetClone.entityUuid);
-                if (entity instanceof ArmorStandEntity) {
+                if (entity instanceof NPCEntity npc) {
+                    targetClone.position = npc.getBlockPos();
+                    targetClone.yaw = npc.getYaw();
+                    targetClone.pitch = npc.getPitch();
+                    targetClone.dimension = targetWorld.getRegistryKey().getValue().toString();
+                    NPCManager.unregisterEntity(targetClone.entityUuid);
                     entity.discard();
                 }
             }
+        }
+
+        if (cloneData.getActiveCloneIndex() >= 0 && cloneData.getActiveCloneIndex() < cloneData.getCloneCount()) {
+            CloneData.Clone freshSnapshot = new CloneData.Clone(player);
+            freshSnapshot.entityUuid = CloneEntity.createClone(player, cloneData.getActiveCloneIndex() + 1).getUuid();
+            cloneData.getClones().set(cloneData.getActiveCloneIndex(), freshSnapshot);
         }
 
         applyCloneToPlayer(player, targetClone);
@@ -123,9 +123,9 @@ public class CloneCommands {
         
         if (targetWorld != null && targetWorld != player.getWorld()) {
             Vec3d pos = new Vec3d(clone.position.getX() + 0.5, clone.position.getY(), clone.position.getZ() + 0.5);
-            player.teleport(targetWorld, pos.x, pos.y, pos.z, player.getYaw(), player.getPitch());
+            player.teleport(targetWorld, pos.x, pos.y, pos.z, clone.yaw, clone.pitch);
         } else {
-            player.teleport(clone.position.getX() + 0.5, clone.position.getY(), clone.position.getZ() + 0.5);
+            player.refreshPositionAndAngles(clone.position.getX() + 0.5, clone.position.getY(), clone.position.getZ() + 0.5, clone.yaw, clone.pitch);
         }
     }
 
