@@ -6,5 +6,7 @@
   "item.ancestralpowers.lunar_axe": "Lunar Axe",
   "item.ancestralpowers.affliction_dagger": "Affliction Dagger",
   "item.ancestralpowers.inversion_dagger": "Inversion Dagger",
-  "effect.ancestralpowers.spectral_form": "Spectral Form"
+  "effect.ancestralpowers.spectral_form": "Spectral Form",
+  "entity.ancestralpowers.corpse": "Corpse",
+  "entity.ancestralpowers.corpse_of": "Corpse of %s"
 }

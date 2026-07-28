@@ -5,6 +5,10 @@ import dev.joaq.ancestralpowers.client.ModKeyBinds;
 import dev.joaq.ancestralpowers.client.StaminaHudOverlay;
 import dev.joaq.ancestralpowers.client.renderer.NPCEntityRenderer;
 import dev.joaq.ancestralpowers.commands.InventoryPosCommand;
+import dev.joaq.ancestralpowers.corpse.client.renderer.CorpseRenderer;
+import dev.joaq.ancestralpowers.registry.ModCorpseEntities;
+import dev.joaq.ancestralpowers.corpse.gui.CorpseHandledScreens;
+import dev.joaq.ancestralpowers.corpse.gui.CorpseScreen;
 import dev.joaq.ancestralpowers.networking.packet.c2s.ToggleGPayload;
 import dev.joaq.ancestralpowers.networking.packet.c2s.ToggleRPayload;
 import dev.joaq.ancestralpowers.registry.ModEntities;
@@ -14,6 +18,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.PacketByteBuf;
@@ -53,5 +58,7 @@ public class AncestralPowersClient implements ClientModInitializer {
         });
 
         EntityRendererRegistry.register(ModEntities.NPC_ENTITY, NPCEntityRenderer::new);
+        EntityRendererRegistry.register(ModCorpseEntities.CORPSE_ENTITY, CorpseRenderer::new);
+        ScreenRegistry.register(CorpseHandledScreens.CORPSE_SCREEN_HANDLER, CorpseScreen::new);
     }
 }

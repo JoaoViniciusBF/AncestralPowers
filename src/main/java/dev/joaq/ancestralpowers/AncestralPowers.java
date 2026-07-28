@@ -3,6 +3,10 @@ package dev.joaq.ancestralpowers;
 import dev.joaq.ancestralpowers.commands.ModCommands;
 import dev.joaq.ancestralpowers.components.MyComponents;
 import dev.joaq.ancestralpowers.components.PersonalDimensionCounter;
+import dev.joaq.ancestralpowers.corpse.CorpseConfig;
+import dev.joaq.ancestralpowers.corpse.events.CorpseDeathEvents;
+import dev.joaq.ancestralpowers.registry.ModCorpseEntities;
+import dev.joaq.ancestralpowers.corpse.gui.CorpseHandledScreens;
 import dev.joaq.ancestralpowers.dimensions.ModDimensions;
 import dev.joaq.ancestralpowers.events.PlayerDeathEvent;
 import dev.joaq.ancestralpowers.events.PlayerJoinEvent;
@@ -41,11 +45,16 @@ public class AncestralPowers implements ModInitializer, ClientModInitializer, De
         SpectralFormHandler.register();
         ModCommands.register();
         ModEntities.register();
+        ModCorpseEntities.register();
+        CorpseHandledScreens.register();
         ModEffects.register();
         ModItems.register();
         PlayerDeathEvent.ImortalRegister();
+        CorpseDeathEvents.register();
         
         FabricDefaultAttributeRegistry.register(ModEntities.NPC_ENTITY, NPCEntity.createAttributes());
+        
+        CorpseConfig.load();
         
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             SkinManager.loadSkins(server);

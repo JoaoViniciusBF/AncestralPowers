@@ -6,5 +6,7 @@
   "item.ancestralpowers.lunar_axe": "Machado Lunar",
   "item.ancestralpowers.affliction_dagger": "Adaga da Aflição",
   "item.ancestralpowers.inversion_dagger": "Adaga da Inversão",
-  "effect.ancestralpowers.spectral_form": "Forma Espectral"
+  "effect.ancestralpowers.spectral_form": "Forma Espectral",
+  "entity.ancestralpowers.corpse": "Cadáver",
+  "entity.ancestralpowers.corpse_of": "Cadáver de %s"
 }
