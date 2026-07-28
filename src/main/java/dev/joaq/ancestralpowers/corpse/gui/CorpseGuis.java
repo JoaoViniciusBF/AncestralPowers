@@ -92,30 +92,30 @@ public class CorpseGuis {
 
             this.inventory = new SimpleInventory(allItems.toArray(new ItemStack[0]));
 
-            // Corpse inventory slots (main + armor + offhand)
-            int slotIndex = 0;
-            for (int row = 0; row < 3; row++) {
-                for (int col = 0; col < 9; col++) {
-                    addSlot(new Slot(inventory, slotIndex++, 8 + col * 18, 18 + row * 18));
-                }
-            }
-            // Armor slots
-            for (int col = 0; col < 4; col++) {
-                addSlot(new Slot(inventory, slotIndex++, 8 + col * 18, 84));
-            }
-            // Offhand
-            addSlot(new Slot(inventory, slotIndex++, 98, 84));
+// Corpse inventory slots (main 36 slots = 4 rows x 9)
+int slotIndex = 0;
+for (int row = 0; row < 4; row++) {
+    for (int col = 0; col < 9; col++) {
+        addSlot(new Slot(inventory, slotIndex++, 8 + col * 18, 18 + row * 18));
+    }
+}
+// Armor slots
+for (int col = 0; col < 4; col++) {
+    addSlot(new Slot(inventory, slotIndex++, 8 + col * 18, 102));
+}
+// Offhand
+addSlot(new Slot(inventory, slotIndex++, 98, 102));
 
-            // Player inventory
-            for (int row = 0; row < 3; row++) {
-                for (int col = 0; col < 9; col++) {
-                    addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 116 + row * 18));
-                }
-            }
-            // Player hotbar
-            for (int col = 0; col < 9; col++) {
-                addSlot(new Slot(playerInventory, col, 8 + col * 18, 174));
-            }
+// Player inventory
+for (int row = 0; row < 3; row++) {
+    for (int col = 0; col < 9; col++) {
+        addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 140 + row * 18));
+    }
+}
+// Player hotbar
+for (int col = 0; col < 9; col++) {
+    addSlot(new Slot(playerInventory, col, 8 + col * 18, 198));
+}
         }
 
         @Override
