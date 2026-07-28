@@ -22,6 +22,7 @@ public class PowersManager {
             case "Solar" -> new SolarAccelerationPower();
             case "Lunar" -> new LunarAccelerationPower();
             case "Clone" -> new ClonePower();
+            case "Ascension" -> new AscensionPower();
             default -> null;
         };
     }
@@ -72,7 +73,8 @@ public class PowersManager {
                 new DimensionalArenaPower(),
                 new SolarAccelerationPower(),
                 new LunarAccelerationPower(),
-                new ClonePower()
+                new ClonePower(),
+                new AscensionPower()
         };
         for (Power p : powers) {
             p.reset(player);

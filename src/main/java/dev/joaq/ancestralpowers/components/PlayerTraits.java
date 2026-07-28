@@ -59,6 +59,21 @@ public interface PlayerTraits extends Component {
     CloneData getCloneData();
     void setCloneData(CloneData cloneData);
 
+    Boolean getInSpectralForm();
+    void setInSpectralForm(Boolean inSpectralForm);
+
+    Vec3d getSpectralBodyPosition();
+    void setSpectralBodyPosition(Vec3d pos);
+    void clearSpectralBodyPosition();
+
+    UUID getSpectralBodyCloneId();
+    void setSpectralBodyCloneId(UUID cloneId);
+    void clearSpectralBodyCloneId();
+
+    NbtCompound getSpectralBodyInventory();
+    void setSpectralBodyInventory(NbtCompound inventory);
+    void clearSpectralBodyInventory();
+
 }
 
 

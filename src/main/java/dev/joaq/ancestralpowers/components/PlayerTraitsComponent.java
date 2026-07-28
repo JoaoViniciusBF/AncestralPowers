@@ -32,6 +32,11 @@ public class PlayerTraitsComponent implements PlayerTraits {
 
     private CloneData cloneData = new CloneData();
 
+    private boolean inSpectralForm = false;
+    private Vec3d spectralBodyPosition;
+    private UUID spectralBodyCloneId;
+    private NbtCompound spectralBodyInventory;
+
     @Override
     public UUID getArenaTarget() {
         return this.arenaTarget;
@@ -204,6 +209,61 @@ public class PlayerTraitsComponent implements PlayerTraits {
     }
 
     @Override
+    public Boolean getInSpectralForm() {
+        return this.inSpectralForm;
+    }
+
+    @Override
+    public void setInSpectralForm(Boolean inSpectralForm) {
+        this.inSpectralForm = inSpectralForm;
+    }
+
+    @Override
+    public Vec3d getSpectralBodyPosition() {
+        return this.spectralBodyPosition;
+    }
+
+    @Override
+    public void setSpectralBodyPosition(Vec3d pos) {
+        this.spectralBodyPosition = pos;
+    }
+
+    @Override
+    public void clearSpectralBodyPosition() {
+        this.spectralBodyPosition = null;
+    }
+
+    @Override
+    public UUID getSpectralBodyCloneId() {
+        return this.spectralBodyCloneId;
+    }
+
+    @Override
+    public void setSpectralBodyCloneId(UUID cloneId) {
+        this.spectralBodyCloneId = cloneId;
+    }
+
+    @Override
+    public void clearSpectralBodyCloneId() {
+        this.spectralBodyCloneId = null;
+    }
+
+    @Override
+    public NbtCompound getSpectralBodyInventory() {
+        return this.spectralBodyInventory;
+    }
+
+    @Override
+    public void setSpectralBodyInventory(NbtCompound inventory) {
+        this.spectralBodyInventory = inventory;
+    }
+
+    @Override
+    public void clearSpectralBodyInventory() {
+        this.spectralBodyInventory = null;
+    }
+
+    @Override
     public void readFromNbt(NbtCompound tag) {
         this.movement = tag.getString("movement");
         this.main = tag.getString("main");
@@ -262,6 +322,34 @@ public class PlayerTraitsComponent implements PlayerTraits {
         } else {
             this.cloneData = new CloneData();
         }
+
+        this.inSpectralForm = tag.getBoolean("inSpectralForm");
+
+        if (tag.contains("spectralBodyPosX")) {
+            double x = tag.getDouble("spectralBodyPosX");
+            double y = tag.getDouble("spectralBodyPosY");
+            double z = tag.getDouble("spectralBodyPosZ");
+            this.spectralBodyPosition = new Vec3d(x, y, z);
+        } else {
+            this.spectralBodyPosition = null;
+        }
+
+        if (tag.contains("spectralBodyCloneId")) {
+            String uuidStr = tag.getString("spectralBodyCloneId");
+            if (!uuidStr.isEmpty()) {
+                this.spectralBodyCloneId = UUID.fromString(uuidStr);
+            } else {
+                this.spectralBodyCloneId = null;
+            }
+        } else {
+            this.spectralBodyCloneId = null;
+        }
+
+        if (tag.contains("spectralBodyInventory")) {
+            this.spectralBodyInventory = tag.getCompound("spectralBodyInventory");
+        } else {
+            this.spectralBodyInventory = null;
+        }
     }
 
     @Override
@@ -299,6 +387,22 @@ public class PlayerTraitsComponent implements PlayerTraits {
 
         if (cloneData != null) {
             tag.put("cloneData", cloneData.toNbt());
+        }
+
+        tag.putBoolean("inSpectralForm", inSpectralForm);
+
+        if (spectralBodyPosition != null) {
+            tag.putDouble("spectralBodyPosX", spectralBodyPosition.x);
+            tag.putDouble("spectralBodyPosY", spectralBodyPosition.y);
+            tag.putDouble("spectralBodyPosZ", spectralBodyPosition.z);
+        }
+
+        if (spectralBodyCloneId != null) {
+            tag.putString("spectralBodyCloneId", spectralBodyCloneId.toString());
+        }
+
+        if (spectralBodyInventory != null) {
+            tag.put("spectralBodyInventory", spectralBodyInventory);
         }
     }
 

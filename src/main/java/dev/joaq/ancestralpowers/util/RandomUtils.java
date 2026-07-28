@@ -5,7 +5,7 @@ import java.util.Random;
 public class RandomUtils {
     private static final Random rand = new Random();
 
-    private static final String[] mains = {"Super Força", "Imortalidade", "Fireball", "SuperTeleporteMain", "Scale", "SuperSpeed", "Suppressor", "ArenaPower", "Solar", "Lunar", "Clone"};
+    private static final String[] mains = {"Super Força", "Imortalidade", "Fireball", "SuperTeleporteMain", "Scale", "SuperSpeed", "Suppressor", "ArenaPower", "Solar", "Lunar", "Clone", "Ascension"};
     private static final String[] movements = {"Voo", "Teleporte", "Velocidade", "PersonalDimension"};
     private static final String[] intelligences = {"Burro", "Inteligente", "Gênio"};
 

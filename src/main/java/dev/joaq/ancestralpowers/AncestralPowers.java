@@ -7,6 +7,7 @@ import dev.joaq.ancestralpowers.dimensions.ModDimensions;
 import dev.joaq.ancestralpowers.events.PlayerDeathEvent;
 import dev.joaq.ancestralpowers.events.PlayerJoinEvent;
 import dev.joaq.ancestralpowers.events.PlayerPowersTickHandler;
+import dev.joaq.ancestralpowers.events.SpectralFormHandler;
 import dev.joaq.ancestralpowers.networking.ModPacketsC2S;
 import dev.joaq.ancestralpowers.networking.ModPacketsS2C;
 import dev.joaq.ancestralpowers.npc.NPCEntity;
@@ -37,6 +38,7 @@ public class AncestralPowers implements ModInitializer, ClientModInitializer, De
         ModDimensions.register();
         PlayerJoinEvent.register();
         PlayerPowersTickHandler.register();
+        SpectralFormHandler.register();
         ModCommands.register();
         ModEntities.register();
         ModEffects.register();

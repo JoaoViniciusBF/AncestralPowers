@@ -116,6 +116,7 @@ public class ModCommands {
                                 sendPowerOption(player, "Suppressor");
                                 sendPowerOption(player, "ArenaPower");
                                 sendPowerOption(player, "Clone");
+                                sendPowerOption(player, "Ascension");
                                 return 1;
                             })
             );

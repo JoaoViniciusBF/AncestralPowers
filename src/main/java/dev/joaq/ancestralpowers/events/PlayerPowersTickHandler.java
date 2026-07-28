@@ -11,6 +11,7 @@ public class PlayerPowersTickHandler {
 
     private static final float MAX_STAMINA = 100f;
     private static final float STAMINA_REGEN_PER_TICK = 0.25f;
+    private static final float SPECTRAL_STAMINA_DRAIN = 0.2f;
 
     public static void register() {
         ServerTickEvents.END_SERVER_TICK.register((server) -> {
@@ -21,7 +22,15 @@ public class PlayerPowersTickHandler {
                 PowersManager.applyMovementPower(player, traits.getMovementPower(), traits.getActPower_secondary(), traits.getStamina());
 
                 float current = traits.getStamina();
-                float newStamina = Math.min(current + STAMINA_REGEN_PER_TICK, MAX_STAMINA);
+                float newStamina;
+
+                if (traits.getInSpectralForm()) {
+                    newStamina = Math.max(current - SPECTRAL_STAMINA_DRAIN, 0);
+                    SpectralFormHandler.checkStaminaAndReturnToBody(player);
+                } else {
+                    newStamina = Math.min(current + STAMINA_REGEN_PER_TICK, MAX_STAMINA);
+                }
+
                 traits.setStamina(newStamina);
 
                 ModPacketsS2C.sendStaminaSync(player, newStamina, MAX_STAMINA);
