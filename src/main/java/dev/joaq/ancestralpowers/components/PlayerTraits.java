@@ -56,6 +56,9 @@ public interface PlayerTraits extends Component {
     String getIntelligence();
     void setIntelligence(String intelligence);
 
+    CloneData getCloneData();
+    void setCloneData(CloneData cloneData);
+
 }
 
 

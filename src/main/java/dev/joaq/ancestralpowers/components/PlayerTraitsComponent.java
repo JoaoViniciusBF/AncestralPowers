@@ -30,6 +30,8 @@ public class PlayerTraitsComponent implements PlayerTraits {
     private String main;
     private String intelligence;
 
+    private CloneData cloneData = new CloneData();
+
     @Override
     public UUID getArenaTarget() {
         return this.arenaTarget;
@@ -191,6 +193,15 @@ public class PlayerTraitsComponent implements PlayerTraits {
         this.intelligence = intelligence;
     }
 
+    @Override
+    public CloneData getCloneData() {
+        return this.cloneData;
+    }
+
+    @Override
+    public void setCloneData(CloneData cloneData) {
+        this.cloneData = cloneData;
+    }
 
     @Override
     public void readFromNbt(NbtCompound tag) {
@@ -245,6 +256,12 @@ public class PlayerTraitsComponent implements PlayerTraits {
         } else {
             this.arenaTarget = null;
         }
+
+        if (tag.contains("cloneData")) {
+            this.cloneData = CloneData.fromNbt(tag.getCompound("cloneData"));
+        } else {
+            this.cloneData = new CloneData();
+        }
     }
 
     @Override
@@ -278,6 +295,10 @@ public class PlayerTraitsComponent implements PlayerTraits {
         }
         if (arenaTarget != null) {
             tag.putString("arenaTarget", arenaTarget.toString());
+        }
+
+        if (cloneData != null) {
+            tag.put("cloneData", cloneData.toNbt());
         }
     }
 

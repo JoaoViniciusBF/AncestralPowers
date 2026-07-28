@@ -22,6 +22,9 @@ public class ModCommands {
     public static void register() {
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 
+            CloneCommands.registerSwitchCommand(dispatcher);
+            SkinCommands.registerSkinCommands(dispatcher);
+
             // Comando /gettraits
             dispatcher.register(
                     CommandManager.literal("gettraits")
@@ -111,6 +114,7 @@ public class ModCommands {
                                 sendPowerOption(player, "SuperSpeed");
                                 sendPowerOption(player, "Suppressor");
                                 sendPowerOption(player, "ArenaPower");
+                                sendPowerOption(player, "Clone");
                                 return 1;
                             })
             );
