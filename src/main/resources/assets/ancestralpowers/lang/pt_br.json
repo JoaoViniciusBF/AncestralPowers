@@ -8,5 +8,16 @@
   "item.ancestralpowers.inversion_dagger": "Adaga da Inversão",
   "effect.ancestralpowers.spectral_form": "Forma Espectral",
   "entity.ancestralpowers.corpse": "Cadáver",
-  "entity.ancestralpowers.corpse_of": "Cadáver de %s"
+  "entity.ancestralpowers.corpse_of": "Cadáver de %s",
+  "gui.ancestralpowers.downed.title": "Caído",
+  "gui.ancestralpowers.downed.bleedout": "Sangramento: %ds",
+  "gui.ancestralpowers.downed.reviving": "Resgatando %s... %d%%",
+  "gui.ancestralpowers.downed.being_revived": "Sendo resgatado por %s... %d%%",
+  "chat.ancestralpowers.downed.fell": "%s caiu e precisa de resgate!",
+  "chat.ancestralpowers.downed.revived": "%s foi resgatado por %s!",
+  "chat.ancestralpowers.downed.revive_started": "Iniciando resgate de %s...",
+  "chat.ancestralpowers.downed.revive_cancelled": "Resgate cancelado!",
+  "chat.ancestralpowers.downed.revive_complete": "Você foi resgatado! Você tem 2 corações.",
+  "chat.ancestralpowers.downed.too_far": "Muito longe para resgatar!",
+  "chat.ancestralpowers.downed.already_reviving": "Alguém já está resgatando este jogador!"
 }

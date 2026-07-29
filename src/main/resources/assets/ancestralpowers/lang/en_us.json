@@ -8,5 +8,16 @@
   "item.ancestralpowers.inversion_dagger": "Inversion Dagger",
   "effect.ancestralpowers.spectral_form": "Spectral Form",
   "entity.ancestralpowers.corpse": "Corpse",
-  "entity.ancestralpowers.corpse_of": "Corpse of %s"
+  "entity.ancestralpowers.corpse_of": "Corpse of %s",
+  "gui.ancestralpowers.downed.title": "Downed",
+  "gui.ancestralpowers.downed.bleedout": "Bleedout: %ds",
+  "gui.ancestralpowers.downed.reviving": "Reviving %s... %d%%",
+  "gui.ancestralpowers.downed.being_revived": "Being revived by %s... %d%%",
+  "chat.ancestralpowers.downed.fell": "%s has fallen and needs rescue!",
+  "chat.ancestralpowers.downed.revived": "%s was revived by %s!",
+  "chat.ancestralpowers.downed.revive_started": "Started reviving %s...",
+  "chat.ancestralpowers.downed.revive_cancelled": "Revive cancelled!",
+  "chat.ancestralpowers.downed.revive_complete": "You have been revived! You have 2 hearts.",
+  "chat.ancestralpowers.downed.too_far": "Too far to revive!",
+  "chat.ancestralpowers.downed.already_reviving": "Someone is already reviving this player!"
 }

@@ -72,7 +72,20 @@ public interface PlayerTraits extends Component {
 
     NbtCompound getSpectralBodyInventory();
     void setSpectralBodyInventory(NbtCompound inventory);
-    void clearSpectralBodyInventory();
+void clearSpectralBodyInventory();
+
+    Boolean getIsDowned();
+    void setIsDowned(Boolean isDowned);
+
+    Integer getBleedoutTimer();
+    void setBleedoutTimer(Integer bleedoutTimer);
+
+    Integer getReviveProgress();
+    void setReviveProgress(Integer reviveProgress);
+
+    UUID getReviverUuid();
+    void setReviverUuid(UUID reviverUuid);
+    void clearReviverUuid();
 
 }
 

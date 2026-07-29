@@ -1,6 +1,7 @@
 package dev.joaq.ancestralpowers;
 
 import dev.joaq.ancestralpowers.client.DoubleJumpHandler;
+import dev.joaq.ancestralpowers.client.DownedHudOverlay;
 import dev.joaq.ancestralpowers.client.ModKeyBinds;
 import dev.joaq.ancestralpowers.client.StaminaHudOverlay;
 import dev.joaq.ancestralpowers.client.renderer.NPCEntityRenderer;
@@ -29,6 +30,7 @@ public class AncestralPowersClient implements ClientModInitializer {
     public void onInitializeClient() {
         ModKeyBinds.registerKeyBinds();
         StaminaHudOverlay.register();
+        DownedHudOverlay.register();
         
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (ModKeyBinds.R_KEY.wasPressed()) {
@@ -50,6 +52,7 @@ public class AncestralPowersClient implements ClientModInitializer {
             MinecraftClient client = MinecraftClient.getInstance();
             if (client.player != null && client.inGameHud != null) {
                 StaminaHudOverlay.render(context, client.inGameHud, tickDelta);
+                DownedHudOverlay.render(context, client.inGameHud, tickDelta);
             }
         });
 

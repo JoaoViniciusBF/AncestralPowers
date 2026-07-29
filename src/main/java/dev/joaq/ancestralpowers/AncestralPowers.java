@@ -8,6 +8,7 @@ import dev.joaq.ancestralpowers.corpse.events.CorpseDeathEvents;
 import dev.joaq.ancestralpowers.registry.ModCorpseEntities;
 import dev.joaq.ancestralpowers.corpse.gui.CorpseHandledScreens;
 import dev.joaq.ancestralpowers.dimensions.ModDimensions;
+import dev.joaq.ancestralpowers.events.DownedDisconnectHandler;
 import dev.joaq.ancestralpowers.events.PlayerDeathEvent;
 import dev.joaq.ancestralpowers.events.PlayerJoinEvent;
 import dev.joaq.ancestralpowers.events.PlayerPowersTickHandler;
@@ -39,6 +40,7 @@ public class AncestralPowers implements ModInitializer, ClientModInitializer, De
     public void onInitialize() {
         ModPacketsC2S.register();
         ModPacketsS2C.register();
+        DownedDisconnectHandler.register();
         ModDimensions.register();
         PlayerJoinEvent.register();
         PlayerPowersTickHandler.register();

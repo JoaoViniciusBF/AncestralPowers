@@ -37,6 +37,11 @@ public class PlayerTraitsComponent implements PlayerTraits {
     private UUID spectralBodyCloneId;
     private NbtCompound spectralBodyInventory;
 
+    private boolean isDowned = false;
+    private int bleedoutTimer = 0;
+    private UUID reviverUuid;
+    private int reviveProgress = 0;
+
     @Override
     public UUID getArenaTarget() {
         return this.arenaTarget;
@@ -264,6 +269,51 @@ public class PlayerTraitsComponent implements PlayerTraits {
     }
 
     @Override
+    public Boolean getIsDowned() {
+        return this.isDowned;
+    }
+
+    @Override
+    public void setIsDowned(Boolean isDowned) {
+        this.isDowned = isDowned;
+    }
+
+    @Override
+    public Integer getBleedoutTimer() {
+        return this.bleedoutTimer;
+    }
+
+    @Override
+    public void setBleedoutTimer(Integer bleedoutTimer) {
+        this.bleedoutTimer = bleedoutTimer;
+    }
+
+    @Override
+    public UUID getReviverUuid() {
+        return this.reviverUuid;
+    }
+
+    @Override
+    public void setReviverUuid(UUID reviverUuid) {
+        this.reviverUuid = reviverUuid;
+    }
+
+    @Override
+    public void clearReviverUuid() {
+        this.reviverUuid = null;
+    }
+
+    @Override
+    public Integer getReviveProgress() {
+        return this.reviveProgress;
+    }
+
+    @Override
+    public void setReviveProgress(Integer reviveProgress) {
+        this.reviveProgress = reviveProgress;
+    }
+
+    @Override
     public void readFromNbt(NbtCompound tag) {
         this.movement = tag.getString("movement");
         this.main = tag.getString("main");
@@ -350,6 +400,22 @@ public class PlayerTraitsComponent implements PlayerTraits {
         } else {
             this.spectralBodyInventory = null;
         }
+
+        this.isDowned = tag.getBoolean("isDowned");
+        this.bleedoutTimer = tag.getInt("bleedoutTimer");
+        
+        if (tag.contains("reviverUuid")) {
+            String uuidStr = tag.getString("reviverUuid");
+            if (!uuidStr.isEmpty()) {
+                this.reviverUuid = UUID.fromString(uuidStr);
+            } else {
+                this.reviverUuid = null;
+            }
+        } else {
+            this.reviverUuid = null;
+        }
+        
+        this.reviveProgress = tag.getInt("reviveProgress");
     }
 
     @Override
@@ -404,6 +470,14 @@ public class PlayerTraitsComponent implements PlayerTraits {
         if (spectralBodyInventory != null) {
             tag.put("spectralBodyInventory", spectralBodyInventory);
         }
+
+        tag.putBoolean("isDowned", isDowned);
+        tag.putInt("bleedoutTimer", bleedoutTimer);
+        
+        if (reviverUuid != null) {
+            tag.putString("reviverUuid", reviverUuid.toString());
+        }
+        tag.putInt("reviveProgress", reviveProgress);
     }
 
 }

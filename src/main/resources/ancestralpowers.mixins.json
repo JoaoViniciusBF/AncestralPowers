@@ -16,7 +16,10 @@
   ],
   "mixins": [
     "LivingEntityMixin",
-    "PlayerServerMixin"
+    "PlayerServerMixin",
+    "DownedStateMixin",
+    "EntityPoseMixin",
+    "PlayerEntityUpdatePoseMixin"
   ],
   "injectors": {
     "defaultRequire": 1
