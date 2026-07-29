@@ -4,6 +4,7 @@ import dev.joaq.ancestralpowers.client.DoubleJumpHandler;
 import dev.joaq.ancestralpowers.client.DownedHudOverlay;
 import dev.joaq.ancestralpowers.client.ModKeyBinds;
 import dev.joaq.ancestralpowers.client.StaminaHudOverlay;
+import dev.joaq.ancestralpowers.client.SummonSkeletonEffectHandler;
 import dev.joaq.ancestralpowers.client.renderer.NPCEntityRenderer;
 import dev.joaq.ancestralpowers.commands.InventoryPosCommand;
 import dev.joaq.ancestralpowers.corpse.client.renderer.CorpseRenderer;
@@ -31,6 +32,7 @@ public class AncestralPowersClient implements ClientModInitializer {
         ModKeyBinds.registerKeyBinds();
         StaminaHudOverlay.register();
         DownedHudOverlay.register();
+        SummonSkeletonEffectHandler.register();
         
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (ModKeyBinds.R_KEY.wasPressed()) {
