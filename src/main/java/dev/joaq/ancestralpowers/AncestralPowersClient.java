@@ -6,6 +6,7 @@ import dev.joaq.ancestralpowers.client.ModKeyBinds;
 import dev.joaq.ancestralpowers.client.StaminaHudOverlay;
 import dev.joaq.ancestralpowers.client.SummonSkeletonEffectHandler;
 import dev.joaq.ancestralpowers.client.renderer.NPCEntityRenderer;
+import dev.joaq.ancestralpowers.client.renderer.SummonedGolemRenderer;
 import dev.joaq.ancestralpowers.commands.InventoryPosCommand;
 import dev.joaq.ancestralpowers.corpse.client.renderer.CorpseRenderer;
 import dev.joaq.ancestralpowers.registry.ModCorpseEntities;
@@ -63,6 +64,7 @@ public class AncestralPowersClient implements ClientModInitializer {
         });
 
         EntityRendererRegistry.register(ModEntities.NPC_ENTITY, NPCEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntities.SUMMONED_GOLEM, SummonedGolemRenderer::new);
         EntityRendererRegistry.register(ModCorpseEntities.CORPSE_ENTITY, CorpseRenderer::new);
         ScreenRegistry.register(CorpseHandledScreens.CORPSE_SCREEN_HANDLER, CorpseScreen::new);
     }

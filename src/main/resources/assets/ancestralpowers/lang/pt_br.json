@@ -9,6 +9,7 @@
   "effect.ancestralpowers.spectral_form": "Forma Espectral",
   "entity.ancestralpowers.corpse": "Cadáver",
   "entity.ancestralpowers.corpse_of": "Cadáver de %s",
+  "entity.ancestralpowers.summoned_golem": "Golem Evocado",
   "gui.ancestralpowers.downed.title": "Caído",
   "gui.ancestralpowers.downed.bleedout": "Sangramento: %ds",
   "gui.ancestralpowers.downed.reviving": "Resgatando %s... %d%%",

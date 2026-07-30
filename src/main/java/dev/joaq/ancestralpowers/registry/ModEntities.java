@@ -1,6 +1,7 @@
 package dev.joaq.ancestralpowers.registry;
 
 import dev.joaq.ancestralpowers.entiy.CustomFireballEntity;
+import dev.joaq.ancestralpowers.entity.SummonedGolemEntity;
 import dev.joaq.ancestralpowers.npc.NPCEntity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
@@ -24,6 +25,16 @@ public class ModEntities {
             new Identifier("ancestralpowers", "npc_entity"),
             EntityType.Builder.<NPCEntity>create(NPCEntity::new, SpawnGroup.MISC)
                     .setDimensions(0.6f, 1.8f)
+                    .maxTrackingRange(10)
+                    .trackingTickInterval(3)
+                    .build()
+    );
+
+    public static final EntityType<SummonedGolemEntity> SUMMONED_GOLEM = Registry.register(
+            Registries.ENTITY_TYPE,
+            new Identifier("ancestralpowers", "summoned_golem"),
+            EntityType.Builder.<SummonedGolemEntity>create(SummonedGolemEntity::new, SpawnGroup.MISC)
+                    .setDimensions(1.0f, 2.5f)
                     .maxTrackingRange(10)
                     .trackingTickInterval(3)
                     .build()

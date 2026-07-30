@@ -9,6 +9,7 @@
   "effect.ancestralpowers.spectral_form": "Spectral Form",
   "entity.ancestralpowers.corpse": "Corpse",
   "entity.ancestralpowers.corpse_of": "Corpse of %s",
+  "entity.ancestralpowers.summoned_golem": "Summoned Golem",
   "gui.ancestralpowers.downed.title": "Downed",
   "gui.ancestralpowers.downed.bleedout": "Bleedout: %ds",
   "gui.ancestralpowers.downed.reviving": "Reviving %s... %d%%",

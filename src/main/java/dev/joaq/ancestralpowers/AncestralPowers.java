@@ -15,6 +15,7 @@ import dev.joaq.ancestralpowers.events.PlayerPowersTickHandler;
 import dev.joaq.ancestralpowers.events.SpectralFormHandler;
 import dev.joaq.ancestralpowers.networking.ModPacketsC2S;
 import dev.joaq.ancestralpowers.networking.ModPacketsS2C;
+import dev.joaq.ancestralpowers.entity.SummonedGolemEntity;
 import dev.joaq.ancestralpowers.npc.NPCEntity;
 import dev.joaq.ancestralpowers.registry.ModEffects;
 import dev.joaq.ancestralpowers.registry.ModEntities;
@@ -55,6 +56,7 @@ public class AncestralPowers implements ModInitializer, ClientModInitializer, De
         CorpseDeathEvents.register();
         
         FabricDefaultAttributeRegistry.register(ModEntities.NPC_ENTITY, NPCEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(ModEntities.SUMMONED_GOLEM, SummonedGolemEntity.createAttributes());
         
         CorpseConfig.load();
         
